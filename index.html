@@ -1,0 +1,2063 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sadhna App</title>
+    <link rel="stylesheet" href="StylesheetCommon.css" />
+    <link rel="stylesheet" href="StylesTable.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="loadingSpinner" style="display: none">
+        <div class="typing"><span></span><span></span><span></span></div>
+      </div>
+
+      <div class="infoPopup" id="successPopup">
+        <div class="infoPopup-content">
+          <div class="infoPopup-icon success"></div>
+          <h2 class="infoPopup-heading success">Success!</h2>
+          <div id="successMessage" class="infoPopup-message"></div>
+          <button class="green" onclick="CLOSE_INFO_POPUP('successPopup')">
+            OKAY
+          </button>
+        </div>
+      </div>
+
+      <div class="infoPopup" id="errorPopup">
+        <div class="infoPopup-content">
+          <div class="infoPopup-icon error"></div>
+          <h2 class="infoPopup-heading error">Error!</h2>
+          <div id="errorMessage" class="infoPopup-message"></div>
+          <button
+            class="red"
+            id="errorPopupButtonClick"
+            onclick="CLOSE_INFO_POPUP('errorPopup')"
+          >
+            TRY AGAIN
+          </button>
+        </div>
+      </div>
+
+      <div class="infoPopup" id="confirmationPopup">
+        <div class="infoPopup-content">
+          <div class="infoPopup-icon confirmation"></div>
+          <div class="infoPopup-message" id="confirmationMessage"></div>
+          <div class="button-row">
+            <button class="red" id="confirmationNoButton">NO</button>
+            <button class="green" id="confirmationYesButton">YES</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="shorts-overlay" id="short-overlay" style="display: flex">
+          <div class="shorts-video-wrapper">
+            <!-- <button id="close-btn" onclick="hideShort()">✖</button> -->
+            <iframe
+              loading="lazy"
+              id="short-frame"
+              title="YouTube Shorts Player"
+              allow="
+                autoplay;
+                accelerometer;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+              "
+              allowfullscreen
+            ></iframe>
+            <button id="skip-btn" onclick="hideShort()">Skip &gt;&gt;</button>
+          </div>
+        </div>
+
+        <div class="popup" id="mainContainer">
+          <div class="popup-content scrollable-content">
+            <div class="calendar-container" id="testing">
+              <iframe
+                id="tesingFrame"
+                class="calendar-iframe"
+                src="https://calendar.google.com/calendar/embed?src=5tvimg0va743vaecakfbaqario@group.calendar.google.com&src=unsrlf4f9d7gncjlekv875uu2g@group.calendar.google.com&src=ec8a98e4759a2165bfbb1832292ad6acc7070acfe5d64f4561da0913b690c175@group.calendar.google.com&ctz=Asia/Kolkata&mode=AGENDA"
+                title="NKD Calendar"
+              >
+              </iframe>
+            </div>
+
+            <div class="flex">
+              <div
+                class="user-info-block"
+                id="login-user-name-div_fp"
+                style="display: none"
+              >
+                <p id="login-user-name-lbl_fp"></p>
+              </div>
+
+              <div class="button-row">
+                <button
+                  class="purple_reg"
+                  id="initialRegistration"
+                  onclick="OpenInitialRegistration()"
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/255953/user-edit.svg"
+                    alt="New Registration"
+                    class="purple_reg_icon"
+                    style="width: 20px; height: 20px; margin-right: 8px"
+                  />
+                  <span>New Registration</span>
+                </button>
+                <button
+                  class="purple"
+                  id="initialLoginLogout"
+                  onclick="OpenInitialLoginWindow()"
+                >
+                  Login
+                </button>
+              </div>
+              <button class="green" onclick="openJapaWindow()">Japa</button>
+              <button class="green" onclick="openReadingWindow()">
+                Reading
+              </button>
+              <button class="green" onclick="openHearingWindow()">
+                Hearing
+              </button>
+
+              <button class="youtube-btn" onclick="openYouTubeWindow()">
+                <img
+                  src="https://www.svgrepo.com/show/13671/youtube.svg"
+                  alt="YouTube"
+                  class="yt-icon"
+                />
+                <span>NKD YouTube</span>
+              </button>
+
+              <button class="green" onclick="openOtherLinkWindow()">MCQ</button>
+              <button class="blue" onclick="openGlorificationPanel()">
+                Glorifications
+              </button>
+              <button class="blue" onclick="showSAPasswordPopup()">
+                Sadhna Analysis
+              </button>
+              <button class="blue" onclick="asdflasdf()">🔐 Admin Panel</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup" id="adminPanelContainerPopup">
+          <div class="popup-content scrollable-content"></div>
+        </div>
+
+        <div id="adminPanelInnerCode">
+          <div class="popup" id="adminIssueBook">
+            <div class="popup-content scrollable-content">
+              <h2>Devotee Book Allocation</h2>
+              <div class="custom-control-row">
+                <div class="liveSearchContainer">
+                  <input
+                    type="text"
+                    id="adminCustName"
+                    class="liveSearch"
+                    placeholder="Customer Name..."
+                  />
+                  <button class="liveSearchClearBtn" id="adminCustNameClrBtn">
+                    &times;
+                  </button>
+                  <ul id="adminCustNameULList" class="liveSearchUL"></ul>
+                </div>
+              </div>
+              <div class="custom-control-row">
+                <input
+                  type="text"
+                  id="adminBBookAmount"
+                  inputmode="numeric"
+                  class="liveSearch"
+                  placeholder="Big Book..."
+                />
+                <input
+                  type="text"
+                  id="adminSBookAmount"
+                  inputmode="numeric"
+                  class="liveSearch"
+                  placeholder="Small Book..."
+                />
+              </div>
+              <div class="button-row">
+                <button class="red" onclick="clearAdminBookFields()">
+                  Clear
+                </button>
+                <button class="green" id="ipSubmitBtn" onclick="adminBookAdd()">
+                  Add
+                </button>
+              </div>
+              <div class="sale-selected-items">
+                <h3>Selected Items</h3>
+                <div
+                  class="collection-table-container scrollable-content-table"
+                  style="margin-top: 20px"
+                >
+                  <table id="adSaleTable">
+                    <thead id="adSaleTableTHead" class="table-header">
+                      <tr>
+                        <th>Action</th>
+                        <th>Name</th>
+                        <th>Total</th>
+                        <th>B Book</th>
+                        <th>S Book</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adSaleTableTBody">
+                      <!-- Table rows will be dynamically generated here -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="button-row">
+                <button
+                  class="red"
+                  onclick="SHOW_SPECIFIC_DIV('adminPanelContainerPopup')"
+                >
+                  Back
+                </button>
+                <button
+                  class="green"
+                  id="bookSubmitBtn"
+                  onclick="adminBookSubmitClick()"
+                >
+                  Insert
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="sDonationCashRecdContianer" class="popup">
+            <div class="popup-content scrollable-content">
+              <div class="liveSearchContainer">
+                <label for="crContainer" class="required"
+                  >Sewakarta Name
+                </label>
+                <input
+                  type="text"
+                  id="crContainerName"
+                  class="liveSearch"
+                  placeholder="Search for Sewakarta Name..."
+                />
+                <button class="liveSearchClearBtn" id="crContainerNameClrBtn">
+                  &times;
+                </button>
+                <ul id="crContainerNameULList" class="liveSearchUL"></ul>
+              </div>
+              <input type="text" id="crAmount" placeholder="Amount..." />
+              <button class="green" onclick="crAmountInputClick()">
+                Submit
+              </button>
+              <button
+                class="red"
+                onclick="SHOW_SPECIFIC_DIV('adminPanelContainerPopup')"
+              >
+                Back to Admin Panel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup" id="initailPasswordPopup">
+          <div class="popup-content scrollable-content">
+            <div class="contact-info">
+              <p>
+                If you would like a detailed analysis of your JAPA, please call
+                us at:
+                <a
+                  href="tel:9810893949"
+                  style="color: #135187; text-decoration: none"
+                >
+                  <strong><u>9810893949</u></strong></a
+                >
+                or
+                <a
+                  href="#"
+                  style="
+                    color: #d35400;
+                    text-decoration: underline;
+                    font-size: 16px;
+                  "
+                  onClick="ShowRegistrationPopup()"
+                >
+                  <strong>New Registration</strong>
+                </a>
+              </p>
+            </div>
+
+            <label for="password" class="required">Password</label>
+            <input type="text" id="ipTxtBox" placeholder="Password" required />
+            <div class="button-row">
+              <button class="red" onclick="SHOW_SPECIFIC_DIV('mainContainer')">
+                Cancel
+              </button>
+              <button
+                class="green"
+                id="ipSubmitBtn"
+                onclick="ipSubmitBtnClick()"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup" id="saPasswordPopup">
+          <div class="popup-content scrollable-content">
+            <h2>Enter Your Password</h2>
+            <input
+              type="text"
+              id="saPasswordPopupTxtBox"
+              placeholder="Password"
+              required
+            />
+            <div class="button-row">
+              <button class="red" onclick="saPasswordPopupBtnCloseClick()">
+                Cancel
+              </button>
+              <button
+                class="green"
+                id="passwordSAPopupBtn"
+                onclick="saPasswordPopupBtnClick()"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup" id="saTablePopup">
+          <div class="popup-content scrollable-content">
+            <h2>Sadhna Report</h2>
+            <button class="cancel-button" onclick="saTablePopupCancelClick()">
+              Back
+            </button>
+            <div class="button-row">
+              <select
+                id="masterMonthSelect"
+                required
+                onchange="updateMasterSelection()"
+              ></select>
+              <select
+                id="masterYearSelect"
+                required
+                onchange="updateMasterSelection()"
+              ></select>
+            </div>
+            <div
+              class="collection-table-container scrollable-content-table"
+              id="sadhna-table"
+            >
+              <table id="dynamic-table">
+                <thead id="sadhna-table-header" class="table-header">
+                  <!-- Table headers will be dynamically generated here -->
+                </thead>
+                <tbody id="sadhna-table-body">
+                  <!-- Table rows will be dynamically generated here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="japa-container scrollable-content"
+        id="japaContainer"
+        style="display: none"
+      >
+        <div class="video-container" id="videoContainer">
+          <iframe
+            loading="lazy"
+            src="https://www.youtube.com/embed/AYePUciQDiY"
+            title="YouTube video player"
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
+            allowfullscreen
+          >
+          </iframe>
+        </div>
+        <div
+          class="user-info-block"
+          id="login-user-name-div"
+          style="display: none"
+        >
+          <p id="login-user-name-lbl"></p>
+        </div>
+        <div id="japaTimeMessage" class="japa-time-message">
+          Focus your mind. Chant with devotion between 6:00 and 7:30 minutes to
+          get green japa.
+        </div>
+
+        <div class="contact-info">
+          <div>
+            <p id="display-text"></p>
+          </div>
+        </div>
+
+        <div class="avg_info" id="sdBlock" style="display: none"></div>
+
+        <div class="mantra-block" id="mantraBlock">
+          <button
+            id="toggleMantraBtn"
+            class="mantra-toggle-btn"
+            onclick="showManualJapaWindow()"
+          >
+            Manual Japa
+          </button>
+          <div class="mantra-text" id="mantraText">
+            हरे कृष्ण हरे कृष्ण |<br />
+            कृष्ण कृष्ण हरे हरे ||<br />
+            हरे राम हरे राम |<br />
+            राम राम हरे हरे ||
+          </div>
+          <div class="manual-counter" id="manualCounter">
+            <!-- <div class="counter-display" id="counterDisplay">0 / 108</div> -->
+            <div
+              class="count-circle"
+              id="countCircle"
+              onclick="incrementCount()"
+            >
+              0 / 108
+            </div>
+          </div>
+        </div>
+
+        <div class="timer running" id="timer" style="display: none">
+          00:00:00:00
+        </div>
+
+        <!-- Buttons for Start, Next, Reset, End -->
+        <div class="data-input-buttons data-input-buttons-margin-override">
+          <button
+            class="start"
+            id="startPauseButton"
+            onclick="handleStartPause()"
+          >
+            Start
+          </button>
+          <button
+            class="lap"
+            style="display: none"
+            id="lapButton"
+            onclick="pauseAndShowPopup()"
+          >
+            Next
+          </button>
+        </div>
+        <!-- Laps and Buttons -->
+        <div class="laps" id="laps"></div>
+        <div class="data-save-buttons">
+          <button class="reset" onclick="openConfirmPopup()">Reset</button>
+          <button class="stop" onclick="stopTimer()">End</button>
+          <button class="blue" onclick="openPasswordReportPopup()">
+            Analysis
+          </button>
+        </div>
+        <div class="data-save-buttons" style="margin: 0px">
+          <button class="start" onclick="backToMainScreen('japaContainer')">
+            Back To Main Screen
+          </button>
+        </div>
+
+        <div class="created-by">
+          Powered by
+          <a href="https://www.youtube.com/@Nityakrishnadas" target="_blank">
+            NKD Community</a
+          >
+        </div>
+
+        <div id="message"></div>
+      </div>
+
+      <!-- Other Popups and Content -->
+      <div class="scale-popup" id="scalePopup">
+        <div class="scale-popup-content">
+          <div class="contact-info">
+            <p id="display-text-inner"></p>
+          </div>
+          <fieldset>
+            <legend>जपा गुणवत्ता चुनें</legend>
+
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="lowQuality"
+                name="optradio"
+                value="lowQuality"
+              />
+              <label for="lowQuality">बेकार</label>
+            </div>
+
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="mediumQuality"
+                name="optradio"
+                value="mediumQuality"
+              />
+              <label for="mediumQuality">ठीक ठाक</label>
+            </div>
+
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="highQuality"
+                name="optradio"
+                value="highQuality"
+              />
+              <label for="highQuality">ध्यान पूर्वक</label>
+            </div>
+          </fieldset>
+          <div class="button-row">
+            <button class="red" onclick="closeScalePopup()">Back</button>
+            <button
+              class="enter"
+              id="scalePopupEnterButton"
+              onclick="recordLap()"
+            >
+              Enter
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="popup" id="passwordPopup">
+        <div class="popup-content scrollable-content">
+          <div class="contact-info">
+            <p>
+              If you would like a detailed analysis of your JAPA, please call us
+              at:
+              <a
+                href="tel:9810893949"
+                style="color: #135187; text-decoration: none"
+              >
+                <strong><u>9810893949</u></strong></a
+              >
+              or
+              <a
+                href="#"
+                style="
+                  color: #d35400;
+                  text-decoration: underline;
+                  font-size: 16px;
+                "
+                onClick="ShowRegistrationPopup()"
+              >
+                <strong>New Registration</strong>
+              </a>
+            </p>
+          </div>
+
+          <label for="password" class="required">Password</label>
+          <input type="text" id="password" placeholder="Password" required />
+          <div class="button-row">
+            <button class="red" onclick="closePopup()">Cancel</button>
+            <button class="green" id="japaSubmitBtn" onclick="submitPassword()">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="otherJapaDetailPopup">
+        <div class="popup-content scrollable-content">
+          <div class="select-container">
+            <label for="sleepingTimeSelect" class="required"
+              >सोने का समय (Sleeping Time) (Last Night)</label
+            >
+            <select id="sleepingTimeSelect" required>
+              <option value="" disabled selected>Choose Time</option>
+              <option value="Before 21:01">Before 21:01 Hrs</option>
+              <option value="21:01 to 21:15">21:01 to 21:15 Hrs</option>
+              <option value="21:16 to 21:30">21:16 to 21:30 Hrs</option>
+              <option value="21:31 to 21:45">21:31 to 21:45 Hrs</option>
+              <option value="21:46 to 22:00">21:46 to 22:00 Hrs</option>
+              <option value="22:01 to 22:15">22:01 to 22:15 Hrs</option>
+              <option value="22:16 to 22:30">22:16 to 22:30 Hrs</option>
+              <option value="22:31 to 22:45">22:31 to 22:45 Hrs</option>
+              <option value="22:46 to 23:00">22:46 to 23:00 Hrs</option>
+              <option value="After 23:00">After 23:00 Hrs</option>
+            </select>
+          </div>
+
+          <div class="select-container">
+            <label for="wakeUpTimeSelect" class="required"
+              >उठने का समय (Wake Up Time)</label
+            >
+            <select id="wakeUpTimeSelect" required>
+              <option value="" disabled selected>Choose Time</option>
+              <option value="Before 03:01">Before 03:01 Hrs</option>
+              <option value="03:01 to 03:15">03:01 to 03:15 Hrs</option>
+              <option value="03:16 to 03:30">03:16 to 03:30 Hrs</option>
+              <option value="03:31 to 03:45">03:31 to 03:45 Hrs</option>
+              <option value="03:46 to 04:00">03:46 to 04:00 Hrs</option>
+              <option value="04:01 to 04:15">04:01 to 04:15 Hrs</option>
+              <option value="04:16 to 04:30">04:16 to 04:30 Hrs</option>
+              <option value="04:31 to 04:45">04:31 to 04:45 Hrs</option>
+              <option value="04:46 to 05:00">04:46 to 05:00 Hrs</option>
+              <option value="After 05:00">After 05:00 Hrs</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <fieldset>
+              <legend>आरतियाँ (Aartiyan) (Yesterday)</legend>
+              <label class="checkbox-label">
+                <input type="checkbox" id="gurvashtakamChkBox" />
+                <span>Gurvashtakam Arti</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="narsimhaChkBox" />
+                <span>Narsimha Arti</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="tulsiChkBox" />
+                <span>Tulsi Arti</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="guruPujaChkBox" />
+                <span>Guru Arti</span>
+              </label>
+            </fieldset>
+          </div>
+
+          <label for="serviceTxtBox" class="required">
+            सेवा (मिनट) (Minutes) (Yesterday)
+          </label>
+          <input
+            type="text"
+            id="serviceTxtBox"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            placeholder="Type in minutes ..."
+            required
+          />
+
+          <label for="tdaTxtBox" class="required">
+            मंदिर के लिए दान राशि (Yesterday)
+          </label>
+          <input
+            type="text"
+            id="tdaTxtBox"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            placeholder="Enter the amount ..."
+            required
+          />
+
+          <label for="bdaTxtBox" class="required">
+            ग्रंथ के लिए दान राशि (Yesterday)
+          </label>
+          <input
+            type="text"
+            id="bdaTxtBox"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            placeholder="Enter the amount ..."
+            required
+          />
+
+          <button
+            class="green"
+            id="japaSubmitWODBtn"
+            onclick="japaSubmitWODBtnClick()"
+          >
+            Submit
+          </button>
+          <button class="red" onclick="closeOtherJapaDetailPopup()">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div class="success-popup" id="successPopupReport">
+        <div class="success-popup-content">
+          <h2 style="color: green">Report Submitted! View Here.</h2>
+          <button class="green" onclick="successPopupViewReportButtonClick()">
+            View Report
+          </button>
+        </div>
+      </div>
+      <div class="stats-popup" id="statsPopup">
+        <div class="stats-popup-content">
+          <h2>Your Japa Report</h2>
+          <div class="reportDiv" id="reportDiv"></div>
+          <button class="download" onclick="downloadReport()">
+            Download Report
+          </button>
+          <button class="red" onclick="closeStatsPopup()">Close</button>
+        </div>
+      </div>
+      <div class="confirm-popup" id="confirmPopup">
+        <div class="confirm-popup-content">
+          <h2>Do you want to reset ?</h2>
+          <div class="button-row">
+            <button class="red" onclick="handleConfirmNoClick()">No</button>
+            <button class="green" onclick="handleConfirmYesClick()">Yes</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="passwordReportPopup">
+        <div class="popup-content">
+          <h2>Enter Your Password</h2>
+          <div class="contact-info">
+            <p>
+              If you would like a detailed analysis of your JAPA, please call us
+              at:
+              <a
+                href="tel:9810893949"
+                style="color: #135187; text-decoration: none"
+              >
+                <strong><u>9810893949</u></strong></a
+              >
+              or
+              <a
+                href="#"
+                style="
+                  color: #d35400;
+                  text-decoration: underline;
+                  font-size: 16px;
+                "
+                onClick="ShowRegistrationPopup()"
+              >
+                <strong>New Registration</strong>
+              </a>
+            </p>
+          </div>
+          <input type="text" id="passwordInputReport" placeholder="Password" />
+          <div class="button-row">
+            <button class="red" onclick="handleBackToJapaScreen()">Back</button>
+            <button class="green" onclick="handleReportSubmitPassword()">
+              Submit Password
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="japa-prev-popup" id="japaPrevReportPopup">
+        <div class="japa-prev-popup-content scrollable-content">
+          <h2>Japa Report</h2>
+          <button class="cancel-button" onclick="handleBackToJapaScreen()">
+            Back
+          </button>
+
+          <div class="button-row">
+            <select
+              id="japaMonthSelect"
+              required
+              onchange="updateJapaSelection()"
+            ></select>
+            <select
+              id="japaYearSelect"
+              required
+              onchange="updateJapaSelection()"
+            ></select>
+          </div>
+
+          <div class="popup-content" style="margin-top: 10px">
+            <canvas id="japaDurationChart"></canvas>
+          </div>
+
+          <div class="popup-content" style="margin-top: 10px">
+            <canvas id="japaMalaCountChart" width="400" height="200"></canvas>
+          </div>
+
+          <div class="popup-content" style="margin-top: 10px">
+            <canvas id="japaPieChart" width="400" height="400"></canvas>
+          </div>
+
+          <div class="popup-content" style="margin-top: 10px">
+            <canvas id="japaLapTimePieChart" width="400" height="400"></canvas>
+          </div>
+
+          <div
+            class="collection-table-container scrollable-content-table"
+            id="collection-table"
+          >
+            <table id="japaPrevReportPopupTable">
+              <thead id="japa-table-header" class="table-header">
+                <!-- Table headers will be dynamically generated here -->
+              </thead>
+              <tbody id="table-body">
+                <!-- Table rows will be dynamically generated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="hearingContainerMainDiv">
+        <div class="popup" id="hearingContainer">
+          <div class="popup-content scrollable-content">
+            <h2>Hearing</h2>
+            <div class="timer" id="hearingTimer">00:00:00</div>
+            <button
+              class="green"
+              id="startPauseHearingBtn"
+              onclick="handleStartPauseHearing()"
+            >
+              Start Time
+            </button>
+
+            <label
+              for="hearingLectureByTxtBox"
+              class="required"
+              style="margin-top: 20px"
+              >Lecture By</label
+            >
+            <input
+              type="text"
+              id="hearingLectureByTxtBox"
+              placeholder="Enter name here"
+              required
+            />
+
+            <label for="hearingTopicTxtBox" class="required">Topic</label>
+            <input
+              type="text"
+              id="hearingTopicTxtBox"
+              placeholder="Enter topic here"
+              required
+            />
+
+            <label
+              for="hearingTextArea"
+              class="required"
+              style="margin-top: 10px"
+              >Notes</label
+            >
+            <textarea
+              id="hearingTextArea"
+              rows="8"
+              cols="50"
+              placeholder="Enter your text here"
+              required
+            ></textarea>
+
+            <label for="improvementPointsTxtBox"
+              >मेरे बदलाव के विषय / मेरे अनर्थ / मेरी गलतियां
+            </label>
+
+            <textarea
+              id="improvementPointsTxtBox"
+              placeholder="मेरे बदलाव के विषय / मेरे अनर्थ"
+              rows="1"
+              cols="50"
+              oninput="adjustTextAreaRows(this)"
+            ></textarea>
+
+            <label for="myPrayersTxtBox">भगवान से मेरी प्रार्थना </label>
+            <textarea
+              id="myPrayersTxtBox"
+              placeholder="भगवान से मेरी प्रार्थना"
+              rows="1"
+              cols="50"
+              oninput="adjustTextAreaRows(this)"
+            ></textarea>
+
+            <label for="myGratitudeTxtBox"
+              >भगवान और गुरु के प्रति मेरी कृतज्ञता
+            </label>
+
+            <textarea
+              id="myGratitudeTxtBox"
+              placeholder="भगवान और गुरु के प्रति मेरी कृतज्ञता "
+              rows="1"
+              cols="50"
+              oninput="adjustTextAreaRows(this)"
+            ></textarea>
+
+            <div class="button-row">
+              <button class="red" onclick="hearingResetButton()">Clear</button>
+              <button
+                class="green"
+                id="submitBtn"
+                onclick="showHearingPasswordPopup()"
+              >
+                Submit
+              </button>
+              <button class="blue" onclick="openHCReportPasswordPopup()">
+                Analysis
+              </button>
+            </div>
+
+            <button
+              class="green"
+              onclick="backToMainScreenHearing('hearingContainer')"
+            >
+              Back To Main Screen
+            </button>
+          </div>
+        </div>
+        <div class="password-popup" id="hearingContainerPasswordPopup">
+          <div class="password-popup-content">
+            <div class="contact-info">
+              <p>
+                If you would like a detailed analysis of your JAPA, please call
+                us at:
+                <a
+                  href="tel:9810893949"
+                  style="color: #135187; text-decoration: none"
+                >
+                  <strong><u>9810893949</u></strong></a
+                >
+                or
+                <a
+                  href="#"
+                  style="
+                    color: #d35400;
+                    text-decoration: underline;
+                    font-size: 16px;
+                  "
+                  onClick="ShowRegistrationPopup()"
+                >
+                  <strong>New Registration</strong>
+                </a>
+              </p>
+            </div>
+
+            <h2>अपना पासवर्ड डालें</h2>
+            <input
+              type="text"
+              class="required"
+              id="hearingPasswordTxtBox"
+              placeholder="Password"
+            />
+            <div class="button-row">
+              <button class="red" onclick="closeHearingPasswordPopup()">
+                Cancel
+              </button>
+              <button class="green" onclick="saveHearingData()">Submit</button>
+            </div>
+          </div>
+        </div>
+        <div class="popup" id="hearingContainerSuccessPopup">
+          <div class="popup-content">
+            <h2 style="color: green">Your Hearing Notes saved successfully.</h2>
+            <button class="green" onclick="closeHearingSuccessPopup()">
+              Back To Main Screen
+            </button>
+          </div>
+        </div>
+        <div class="password-popup" id="hcReportPasswordPopup">
+          <div class="password-popup-content">
+            <h2>अपना पासवर्ड डालें</h2>
+            <input
+              type="text"
+              class="required"
+              id="hcReportPasswordTxtBox"
+              placeholder="Password"
+            />
+            <button class="green" onclick="showHearingReportOnSubmit()">
+              Submit
+            </button>
+            <button class="red" onclick="hcReportPasswordPopupCancelClick()">
+              Cancel
+            </button>
+          </div>
+        </div>
+        <div class="popup" id="hcReport">
+          <div class="popup-content scrollable-content">
+            <h2>Hearing Report</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="backToHearingScreen()"
+            >
+              Back
+            </button>
+            <div
+              class="popup-content"
+              style="margin-top: 10px; margin-bottom: 10px"
+            >
+              <canvas id="hearingPieChart" width="400" height="400"></canvas>
+            </div>
+            <div id="hcCardView" class="card-view"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="readingContainerMainDiv">
+        <div class="popup" id="readingContainer">
+          <div class="popup-content scrollable-content">
+            <h2>Reading</h2>
+            <div class="timer" id="readingTimer">00:00:00</div>
+            <button
+              class="green"
+              id="startPauseReadingBtn"
+              onclick="handleStartPauseReading()"
+            >
+              Start Time
+            </button>
+
+            <label
+              for="readingBookNameTxtBox"
+              style="margin-top: 20px"
+              class="required"
+              >Book Name</label
+            >
+            <input
+              type="text"
+              id="readingBookNameTxtBox"
+              placeholder="Book name ..."
+              required
+            />
+
+            <label for="readingTextArea" class="required">Notes</label>
+            <textarea
+              id="readingTextArea"
+              rows="8"
+              cols="50"
+              placeholder="Enter your text here"
+              required
+            ></textarea>
+            <div class="button-row">
+              <button class="red" onclick="readingResetButton()">Clear</button>
+              <button
+                class="green"
+                id="submitBtn"
+                onclick="showReadingPasswordPopup()"
+              >
+                Submit
+              </button>
+              <button class="blue" onclick="openRCReportPasswordPopup()">
+                Analysis
+              </button>
+            </div>
+
+            <button
+              class="green"
+              onclick="backToMainScreenReading('readingContainer')"
+            >
+              Back To Main Screen
+            </button>
+          </div>
+        </div>
+        <div class="password-popup" id="readingContainerPasswordPopup">
+          <div class="password-popup-content">
+            <div class="contact-info">
+              <p>
+                If you would like a detailed analysis of your JAPA, please call
+                us at:
+                <a
+                  href="tel:9810893949"
+                  style="color: #135187; text-decoration: none"
+                >
+                  <strong><u>9810893949</u></strong></a
+                >
+                or
+                <a
+                  href="#"
+                  style="
+                    color: #d35400;
+                    text-decoration: underline;
+                    font-size: 16px;
+                  "
+                  onClick="ShowRegistrationPopup()"
+                >
+                  <strong>New Registration</strong>
+                </a>
+              </p>
+            </div>
+
+            <h2>अपना पासवर्ड डालें</h2>
+            <input
+              type="text"
+              class="required"
+              id="readingPasswordTxtBox"
+              placeholder="Password"
+            />
+            <button class="green" onclick="saveReadingData()">Submit</button>
+            <button class="red" onclick="closeReadingPasswordPopup()">
+              Cancel
+            </button>
+          </div>
+        </div>
+        <div class="popup" id="readingContainerSuccessPopup">
+          <div class="popup-content">
+            <h2 style="color: green">Your Reading Notes saved successfully.</h2>
+            <button class="green" onclick="closeReadingSuccessPopup()">
+              Back To Main Screen
+            </button>
+          </div>
+        </div>
+        <div class="password-popup" id="rcReportPasswordPopup">
+          <div class="password-popup-content">
+            <h2>अपना पासवर्ड डालें</h2>
+            <input
+              type="text"
+              class="required"
+              id="rcReportPasswordTxtBox"
+              placeholder="Password"
+            />
+            <div class="button-row">
+              <button class="red" onclick="rcReportPasswordPopupCancelClick()">
+                Cancel
+              </button>
+              <button class="green" onclick="showReadingReportOnSubmit()">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="popup" id="rcReport">
+          <div class="popup-content scrollable-content">
+            <h2>Reading Report</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="backToReadingScreen()"
+            >
+              Back
+            </button>
+            <div
+              class="popup-content"
+              style="margin-top: 10px; margin-bottom: 10px"
+            >
+              <canvas id="readingPieChart" width="400" height="400"></canvas>
+            </div>
+            <div id="rcCardView" class="card-view"></div>
+          </div>
+        </div>
+      </div>
+      <div class="popup" id="registrationContainer">
+        <div class="popup-content scrollable-content">
+          <h2>Registration Form</h2>
+          <label for="nameTxtBox" class="required">Name</label>
+          <input required type="text" id="nameTxtBox" placeholder="Name" />
+
+          <label for="mobileTxtBox" class="required">Mobile No</label>
+          <input
+            required
+            type="text"
+            id="mobileTxtBox"
+            placeholder="Mobile No"
+            pattern="[0-9]{10}"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            maxlength="11"
+          />
+
+          <label for="addressTxtBox" class="required">Address</label>
+          <input
+            required
+            type="text"
+            id="addressTxtBox"
+            placeholder="Address"
+          />
+
+          <label for="emailTxtBox">Email</label>
+          <input type="text" id="emailTxtBox" placeholder="Email" />
+
+          <label for="areaLeaderSelect" class="required">Area Leader</label>
+          <select id="areaLeaderSelect">
+            <option value="">Select...</option>
+            <option>HG Padamakshi Hari Priya Mata Ji</option>
+            <option>HG Sujana Mata Ji</option>
+            <option>HG Anirudra Kirtan Prabhu Ji</option>
+            <option>Not There</option>
+          </select>
+
+          <label for="knowingTxtBox">Introduced By</label>
+          <input type="text" id="knowingTxtBox" placeholder="Introduced By" />
+          <div class="button-row">
+            <button
+              class="red"
+              onclick="resetRegistrationForm('registrationContainer')"
+            >
+              Clear
+            </button>
+            <button
+              class="green"
+              onclick="saveNewRegistration()"
+              id="submitBtn"
+              disabled
+            >
+              Submit
+            </button>
+          </div>
+
+          <button class="green" onclick="backToMain('registrationContainer')">
+            Back To Main Screen
+          </button>
+        </div>
+      </div>
+
+      <div class="popup" id="registrationContainerPopup">
+        <div class="popup-content">
+          <h2 style="color: green" id="registrationContainerPopupH2">
+            Your details have been successfully saved. Your Password :
+            <span
+              style="color: #d35400"
+              id="registrationContainerPopupSpan"
+            ></span>
+          </h2>
+          <button
+            class="green"
+            onclick="backToMain('registrationContainerPopup')"
+          >
+            Back To Main Screen
+          </button>
+        </div>
+      </div>
+
+      <div class="popup" id="kartikContainer">
+        <div class="popup-content scrollable-content">
+          <h2>कार्तिक मास की जय!</h2>
+          <div id="kartik-radio-buttons" class="radio-container-scroll">
+            <!-- Question 1 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="night9" class="required"
+                  >क्या आप कल रात 9 बजे से पहले सो पाए?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="night9-yes"
+                    name="night9"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="night9-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="night9-no"
+                    name="night9"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="night9-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="morning3" class="required"
+                  >क्या आप आज सुबह 4 बजे से पहले उठ पाए?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="morning3-yes"
+                    name="morning3"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="morning3-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="morning3-no"
+                    name="morning3"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="morning3-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="gangajal" class="required"
+                  >क्या आपने आज स्नान वाली बाल्टी में गंगाजल डाला?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="gangajal-yes"
+                    name="gangajal"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="gangajal-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="gangajal-no"
+                    name="gangajal"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="gangajal-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="morejapa" class="required"
+                  >क्या आप कल अधिक जप कर पाए?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="morejapa-yes"
+                    name="morejapa"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="morejapa-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="morejapa-no"
+                    name="morejapa"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="morejapa-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="reading1hr" class="required"
+                  >क्या आप कल एक घण्टे आध्यात्मिक पठन कर पाए?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="reading1hr-yes"
+                    name="reading1hr"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="reading1hr-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="reading1hr-no"
+                    name="reading1hr"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="reading1hr-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="faultfinding" class="required"
+                  >क्या आपने कल किसी भक्त में दोष दर्शन किया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="faultfinding-yes"
+                    name="faultfinding"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="faultfinding-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="faultfinding-no"
+                    name="faultfinding"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="faultfinding-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="timewasterest" class="required"
+                  >क्या आपने कल प्रजल्प/आराम करने में समय व्यर्थ किया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="timewasterest-yes"
+                    name="timewasterest"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="timewasterest-yes" class="custom-label"
+                    >हाँ</label
+                  >
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="timewasterest-no"
+                    name="timewasterest"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="timewasterest-no" class="custom-label"
+                    >नहीं</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="bgbhagwat" class="required"
+                  >क्या आपने कल भगवद गीता और भागवतम का पाठ किया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="bgbhagwat-yes"
+                    name="bgbhagwat"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="bgbhagwat-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="bgbhagwat-no"
+                    name="bgbhagwat"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="bgbhagwat-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="deepdaan" class="required"
+                  >क्या आपने कल दीप दान किया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="deepdaan-yes"
+                    name="deepdaan"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="deepdaan-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="deepdaan-no"
+                    name="deepdaan"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="deepdaan-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="damodarask" class="required"
+                  >क्या आपने कल दामोदराष्टकम व गोपीगीत का श्रवण/उच्चारण
+                  किया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="damodarask-yes"
+                    name="damodarask"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="damodarask-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="damodarask-no"
+                    name="damodarask"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="damodarask-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="daan" class="required"
+                  >क्या आपने कल प्रचार कार्यों के लिए वैश्णवो को दान
+                  दिया?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="daan-yes"
+                    name="daan"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="daan-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="daan-no"
+                    name="daan"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="daan-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="tulsi" class="required"
+                  >क्या आपने कल भगवान को तुलसी अर्पित की?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="tulsi-yes"
+                    name="tulsi"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="tulsi-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="tulsi-no"
+                    name="tulsi"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="tulsi-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <button class="green" onclick="showKartikRadioResult()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="saturdayContainer">
+        <div class="popup-content scrollable-content">
+          <h2>हरि नाम संकीर्तन!</h2>
+          <div class="radio-container-scroll">
+            <!-- Question 1 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="sat" class="required"
+                  >क्या आप कल संकीर्तन में जाएंगे?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="sat-yes"
+                    name="sat"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="sat-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="sat-no"
+                    name="sat"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="sat-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <button class="green" onclick="showSatButtonResult()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="sundayContainer">
+        <div class="popup-content scrollable-content">
+          <h2>हरि नाम संकीर्तन!</h2>
+          <div class="radio-container-scroll">
+            <!-- Question 1 -->
+            <div class="radio-container">
+              <div class="radio-heading">
+                <label for="sun" class="required"
+                  >क्या आप आज संकीर्तन में जाएंगे?</label
+                >
+              </div>
+              <div class="radio-content">
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="sun-yes"
+                    name="sun"
+                    value="हाँ"
+                    class="custom-radio required"
+                  />
+                  <label for="sun-yes" class="custom-label">हाँ</label>
+                </div>
+                <div class="options">
+                  <input
+                    type="radio"
+                    id="sun-no"
+                    name="sun"
+                    value="नहीं"
+                    class="custom-radio"
+                  />
+                  <label for="night9-no" class="custom-label">नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <button class="green" onclick="showSunButtonResult()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="youtubeContainerNew">
+        <div class="popup" id="youTubeContainer">
+          <div class="popup-content scrollable-content">
+            <h2>NKD PlayList</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="SHOW_SPECIFIC_DIV('mainContainer')"
+            >
+              Back
+            </button>
+            <button
+              class="green"
+              style="margin: 0px"
+              onclick="openyouTubeShortsWindow()"
+            >
+              Youtube Shorts
+            </button>
+
+            <div class="search-container">
+              <input
+                type="text"
+                id="youTubePlayListInput"
+                class="liveSearch"
+                placeholder="Select playlist..."
+                oninput="filterPlaylists(this.value)"
+              />
+            </div>
+
+            <div
+              id="youTubePlayListImageCardView"
+              class="image_container"
+            ></div>
+            <div id="youTubePlayListVideoContainer" class="video-list"></div>
+          </div>
+        </div>
+
+        <div class="popup" id="youTubePlayListItemContainer">
+          <div class="popup-content scrollable-content">
+            <h2 id="playlistH2Ctrl">Loading...</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="backToPlayList()"
+            >
+              Back
+            </button>
+
+            <div class="search-container">
+              <input
+                type="text"
+                id="youTubeItemInput"
+                class="liveSearch"
+                placeholder="Select video..."
+                oninput="filteryouTubeItem(this.value)"
+              />
+            </div>
+            <div
+              class="video-container"
+              id="youTubeVideoIframeDiv"
+              style="display: none"
+            >
+              <iframe
+                loading="lazy"
+                id="youTubeVideoIframe"
+                title="YouTube video player"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+
+            <div class="accordion" id="youTubeItemAccordion"></div>
+
+            <div id="youTubeItemImageCardView" class="image_container"></div>
+          </div>
+        </div>
+
+        <div class="popup" id="youTubePlayVideoContainer">
+          <div class="popup-content scrollable-content">
+            <h2>Video</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="SHOW_SPECIFIC_DIV('youTubeContainer')"
+            >
+              Back
+            </button>
+
+            <div class="video-container" id="youTubePlayVideo"></div>
+            <div id="video-title" class="image_title"></div>
+            <div
+              id="youTubeRestVideoImageCardView"
+              class="playlist_image_container"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="youtubeshortsNew">
+        <div class="popup" id="youTubeShortsContainer">
+          <div class="popup-content scrollable-content">
+            <h2>NKD Shorts</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="SHOW_SPECIFIC_DIV('youTubeContainer')"
+            >
+              Back
+            </button>
+
+            <div class="search-container">
+              <input
+                type="text"
+                id="youTubeShortsPlayListInput"
+                class="liveSearch"
+                placeholder="Select shorts..."
+                oninput="filterShorts(this.value)"
+              />
+            </div>
+
+            <div id="youTubeShortsImageCardView" class="image_container"></div>
+          </div>
+        </div>
+
+        <div class="popup" id="youTubeShortsPlayVideoContainer">
+          <div class="popup-content scrollable-content">
+            <h2>Video</h2>
+            <button
+              class="red"
+              style="margin-bottom: 10px"
+              onclick="SHOW_SPECIFIC_DIV('youTubeShortsContainer')"
+            >
+              Back
+            </button>
+
+            <div class="video-container" id="youTubeShortsPlayVideo">
+              <iframe
+                id="youTubeShortsVideoIframe"
+                loading="lazy"
+                title="YouTube video player"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+            <div id="shorts-video-title" class="image_title"></div>
+            <div
+              id="youTubeShortsRestVideoImageCardView"
+              class="playlist_image_container"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="OtherLinkContainerMain">
+        <div class="popup" id="otherLinkContianer">
+          <div class="popup-content scrollable-content">
+            <button class="red" onclick="clearOtherLinkData()">Back</button>
+            <div id="result-container" class="mcq-result-list-view"></div>
+
+            <div class="accordion" id="otherLinkAccordion"></div>
+          </div>
+        </div>
+        <div class="popup" id="otherLinkPasswordPopup">
+          <div class="popup-content scrollable-content">
+            <h2>Enter Your Password</h2>
+            <input
+              type="text"
+              id="otherLinkPasswordPopupTxtBox"
+              placeholder="Password"
+              required
+            />
+            <div class="button-row">
+              <button
+                class="red"
+                onclick="otherLinkPasswordPopupBtnCloseClick()"
+              >
+                Cancel
+              </button>
+              <button
+                class="green"
+                id="passwordSAPopupBtn"
+                onclick="otherLinkPasswordPopupBtnClick()"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="otherLinkChildAccordionMain">
+        <div class="popup" id="otherLinkChildMCQListContainer">
+          <div class="popup-content scrollable-content">
+            <h2 id="mcqHeadling">Loading...</h2>
+            <button
+              class="red"
+              onclick="Back_to_MCQ_Screen('otherLinkContianer')"
+            >
+              Back
+            </button>
+            <iframe
+              id="dynamicIframe"
+              tabindex="0"
+              title="book"
+              class="book-iframe"
+              >Loading...</iframe
+            >
+            <div class="child-accordion" id="otherLinkChildAccordion"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="passwordPopupAvgWindow">
+        <div class="popup-content scrollable-content">
+          <div class="contact-info">
+            <p>
+              If you would like a detailed analysis of your JAPA, please call us
+              at:
+              <a
+                href="tel:9810893949"
+                style="color: #135187; text-decoration: none"
+              >
+                <strong><u>9810893949</u></strong></a
+              >
+              or
+              <a
+                href="#"
+                style="
+                  color: #d35400;
+                  text-decoration: underline;
+                  font-size: 16px;
+                "
+                onClick="ShowRegistrationPopup()"
+              >
+                <strong>New Registration</strong>
+              </a>
+            </p>
+          </div>
+
+          <label for="password" class="required">Password</label>
+          <input
+            type="text"
+            id="passwordAvgWindowTxtBox"
+            placeholder="Password"
+            required
+          />
+          <div class="button-row">
+            <button class="red" onclick="SHOW_SPECIFIC_DIV('mainContainer')">
+              Cancel
+            </button>
+            <button
+              class="green"
+              id="submitAvgPassword"
+              onclick="submitAvgPasswordClick()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="glorificationContainer">
+        <div class="popup-content scrollable-content">
+          <h3>Select Name</h3>
+
+          <select id="nameDropdown" onchange="showImage()">
+            <option value="">Select Devotee Name</option>
+          </select>
+
+          <div class="image-box" id="imageBox">
+            <span>No Image</span>
+          </div>
+
+          <select
+            id="glorificationType"
+            class="glorificationTypeDD"
+            onchange="updateQuestion()"
+          >
+            <option value="">Glorification Type</option>
+            <option value="glorification">गुणगान / महिमा वर्णन</option>
+          </select>
+
+          <!-- Question -->
+          <p id="questionText" style="margin-top: 10px; font-weight: 600"></p>
+
+          <!-- Textarea -->
+          <textarea
+            id="answerText"
+            rows="10"
+            placeholder="कृपया केवल घटनाओं के बारे में ही लिखें..."
+            style="width: 100%; margin-top: 10px; padding: 8px"
+          ></textarea>
+
+          <div class="button-row">
+            <button class="red" onclick="SHOW_SPECIFIC_DIV('mainContainer')">
+              Back
+            </button>
+            <button
+              class="green"
+              id="submitBtnGlorification"
+              onclick="handleSubmitGlorification()"
+            >
+              Insert
+            </button>
+          </div>
+
+          <div class="accNesList-wrapper" id="glorificationAccordianContainer">
+            <div class="accNesList-accordion" id="glorificationAccordion"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" id="gfPasswordPopup">
+        <div class="popup-content scrollable-content">
+          <h2>Enter Your Password</h2>
+          <input
+            type="text"
+            id="gfPasswordPopupTxtBox"
+            placeholder="Password"
+            required
+          />
+          <div class="button-row">
+            <button class="red" onclick="gfPasswordPopupBtnCloseClick()">
+              Cancel
+            </button>
+            <button
+              class="green"
+              id="gfPasswordPopupBtn"
+              onclick="gfPasswordPopupBtnClick()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="JavascriptCommon.js"></script>
+    <script src="JavascriptConstants.js"></script>
+    <script src="JapascriptAdminPanel.js"></script>
+    <script src="JavascriptReading.js"></script>
+    <script src="JavascriptHearing.js"></script>
+    <script src="JavascriptYouTube.js"></script>
+    <script src="JavascriptYouTubeNested.js"></script>
+    <script src="JavascriptOtherLink.js"></script>
+    <script src="JavascriptCategory.js"></script>
+    <script src="Javascript.js"></script>
+    <script src="JavascriptInitalLogin.js"></script>
+    <script src="JavascriptReport.js"></script>
+    <script src="JavascriptTable.js"></script>
+    <script src="JavascriptRegistration.js"></script>
+    <script src="JavascriptJapaChart.js"></script>
+    <script src="JavascriptVSong.js"></script>
+    <script src="JavascriptGlorification.js"></script>
+  </body>
+</html>

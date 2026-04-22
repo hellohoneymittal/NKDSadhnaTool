@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Electric Bulb Control</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding-top: 40px;
+        background-color: #f2f2f2;
+      }
+
+      .bulb-container {
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .bulb-glass {
+        width: 100px;
+        height: 120px;
+        background-color: #ccc;
+        border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+        position: relative;
+        margin: 0 auto;
+        transition: background-color 0.3s;
+      }
+
+      .bulb-base {
+        width: 40px;
+        height: 25px;
+        background-color: #666;
+        margin: -3px auto 0 auto;
+        border-radius: 5px;
+      }
+
+      .bulb-glass.yellow {
+        background-color: yellow;
+      }
+
+      .bulb-glass.green {
+        background-color: green;
+      }
+
+      .blink {
+        animation: blink 2s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      button {
+        margin: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      button#play {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      button#pause {
+        background-color: #ffd600;
+        color: black;
+      }
+
+      button#stop {
+        background-color: #f44336;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bulb-container">
+      <div class="bulb-glass" id="bulb"></div>
+      <div class="bulb-base"></div>
+    </div>
+
+    <div>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="stop">Stop</button>
+    </div>
+
+    <script>
+      const bulb = document.getElementById("bulb");
+      const playBtn = document.getElementById("play");
+      const pauseBtn = document.getElementById("pause");
+      const stopBtn = document.getElementById("stop");
+
+      playBtn.onclick = () => {
+        bulb.className = "bulb-glass green blink";
+      };
+
+      pauseBtn.onclick = () => {
+        bulb.className = "bulb-glass yellow";
+      };
+
+      stopBtn.onclick = () => {
+        bulb.className = "bulb-glass";
+      };
+    </script>
+  </body>
+</html>

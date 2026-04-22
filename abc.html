@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BusGo</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .phone-frame {
+        max-width: 375px;
+        height: 100vh;
+        margin: 0 auto;
+        position: relative;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #9b34e2;
+        color: white;
+        padding: 12px 16px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .burger {
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      .search {
+        font-size: 20px;
+      }
+
+      .side-menu {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        width: 260px;
+        height: 100%;
+        background: linear-gradient(180deg, #9b34e2, #b86df4);
+        color: white;
+        padding: 20px;
+        box-sizing: border-box;
+        transition: left 0.3s ease;
+        z-index: 1000;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+
+      .side-menu.open {
+        left: 0;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 900;
+        display: none;
+      }
+
+      .overlay.show {
+        display: block;
+      }
+
+      .menu-item {
+        margin: 12px 0;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-item span {
+        margin-left: 10px;
+      }
+
+      .menu-header {
+        margin-bottom: 20px;
+      }
+
+      .menu-header h3 {
+        margin: 0 0 5px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .btn {
+        background-color: #9b34e2;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone-frame">
+      <!-- Side Menu -->
+      <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+          <h3>Alex Johnson</h3>
+          <p>⭐ 2,450 Travel Points</p>
+        </div>
+        <div class="menu-item">🏠 <span>Home</span></div>
+        <div class="menu-item">🚌 <span>Bus Listing</span></div>
+        <div class="menu-item">📄 <span>Bus Details</span></div>
+        <div class="menu-item">🪑 <span>Select Seat</span></div>
+        <div class="menu-item">✅ <span>Verification</span></div>
+        <div class="menu-item">💳 <span>Checkout Payment</span></div>
+        <div class="menu-item">📨 <span>Payment Success</span></div>
+        <div class="menu-item">🎟️ <span>My Tickets</span></div>
+        <div class="menu-item">👤 <span>Profile</span></div>
+        <div class="menu-item">📚 <span>My Bookings</span></div>
+        <div class="menu-item">🕓 <span>Trip History</span></div>
+        <div class="menu-item">❤️ <span>Saved Routes</span></div>
+      </div>
+
+      <!-- Overlay -->
+      <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+      <!-- Header -->
+      <div class="header">
+        <div class="burger" onclick="toggleMenu()">☰</div>
+        <div class="logo">🚌 <span>BusGo</span></div>
+        <div class="search">🔍</div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <h2>Express Lines</h2>
+        <p>Details of the bus route go here.</p>
+        <button class="btn">Select Seats</button>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("sideMenu");
+        const overlay = document.getElementById("overlay");
+        menu.classList.toggle("open");
+        overlay.classList.toggle("show");
+      }
+    </script>
+  </body>
+</html>

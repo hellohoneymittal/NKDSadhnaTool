@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scrollable Cards</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      #dataContainer {
+        margin: 10px;
+      }
+
+      .data-item {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        max-height: 40rem; /* Maximum height */
+        overflow-y: auto; /* Scroll if content exceeds */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .data-item h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .data-item p {
+        font-size: 1.2rem;
+        margin: 5px 0;
+        word-wrap: break-word;
+        line-height: 1.5;
+      }
+
+      .data-item span {
+        font-weight: bold; /* Bold headings */
+      }
+
+      .data-item div {
+        margin-bottom: 10px; /* Adds space between sections */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hcCardView"></div>
+
+    <script>
+      const data = [
+        {
+          "20-Sep-24": {
+            Notes:
+              "* guru aag bhujane ka kaam karte hai. \n* Garibi hoti hai , jisne andar suntushta nahi hai. \n* Amit bhojan ka aaswadan kar vyakti bhitar se khush hota hai. Jaise \n* Lusty hu isliye hamesha istriyo ka chintan karta hu\n* Music ke bina hi naach rahe the , ye hai bhakto ka hridya jab prafullit hota hai tab wo nachta hai chahe akele hi kyon na ho. \n* Bhagwan ka gaur van dekh kar sabhi ko atyant anand aaya. \n* Natvar Raj ke bhi guru mahaprabhu. \n* Sharir me na ho hum jyada sukh le sakte hai aur na hi bahut dukh mil sakta hai. Bhotik sikho ko jhodte ja rahe hai lekin uske baad bhi hum sukh nahi hai. \n* Bhagwan ke anand ke liye hi sab kuch kiya hai.",
+            ImprovementPoints:
+              "Lusty hu isliye bhogne ki ichha karta rahta hu.",
+            Prayers: "Akele me vaishnav aur Hari ke baare me charcha kar saku.",
+            Gratitude:
+              "Thank you prabhu ji aapko dekh kar sikhne ka prayas kar rha hu ki niyamo ka palan kaise karu.",
+          },
+        },
+        {
+          "19-Sep-24": {
+            Notes:
+              "* Moral conduct to har koi bata rahe hai lekin values nahi hai unke andar. \n* Jeevan ka udeshya khana rah gaya hai isliye main hamesha idhar udhar dekh raha hu. \n* Mera jeevan pashu ke jeevan ki tarah ho gaya hai. \n* Bhagwan ki dharohar ko hum apne liye use kar rahe hai ye theek nahi hai . \n* Bhakti me jab ras aayega to ye sab choot jayega. \n* Jeevan ko dekh kar lagna chahiye ki hum bhagwan ke liye hai. \n* Koi bhi activity kya mera bhav bhaktimay hai ya nahi. \n* Ras nahi bhogna chaha raha hu isliye jeevan me Anant dukh aa rahe hai. \n* Jab teacher hi is baat ko beleive nahi karta ki bhagwan hai .\n1. Mahaprabhu bhi pighal gaye jaghai madhai ke vinamrta se. \n2. Hamesha ye bolna ki dusre ki galti thi. \n3. Sastro ko sunte hai lekin usko follow nahi kar rahe. \n4. Bhagwan hamesha ussi se prasann hote hai jo humble hota hai. Otherwise lage raho. \n5. Sabse dyalu avtar hai mahaprabhu. \n6. Chamma matlab uske liye pray karna - chahe wo aapko bura bhala bhi kahe. \n7. Vaishnav apradho ko karne wale ke andar saare paap khush jayenge. \n8. Bhagwan ke liye risk lete hai. Safe karne ki jarurat nahi hai apne aap ko hamesha ye sochna chahiye ki kaise dusre bhakt hamesha apne ko hamesha risk me rakhte hai. \n9. Aisa samay kabhi nahi hai jab main safe honga. \n10. Achha hu nirdhan hu , kyonki ye bhakti ye liye bahut achhi vyavastha. \n11. Bhakti ke liye dhan ki aavasaykta kabhi bhi nahi thi aur kabhi nahi hogi. \n12.",
+            ImprovementPoints:
+              "Mera jeevan aisa hona chahiye ki next life should be fully bhaktimayi.\nPahle meri galti nahi thi , ye hi mera sabse badha bhram hai.",
+            Prayers:
+              "Thank you krishna please give your blessings main ye samajh paau ji jeevan ka purpose aapki seva hai lekin maine senses enjoyment ke liye main use kar raha hu.\nPlease bless me , main aisa kar saku jo shastri me hai waisa kar saku. \nPaschatap kar saku aur aapki seva me lag saku.",
+            Gratitude:
+              "Prabhu ji mujhe mauka de rahe hai lekin char bhotik kamo me laga hua hu. \nMujhe aapki blessings se hi khatm kar sakta hu.\n",
+          },
+        },
+        {
+          "18-Sep-24": {
+            Notes:
+              "* Business aisa hona chahiye ki hamare paas samay ho bhakti ke liye. \n* Give your best always. \n* Yog me rahkar karm karne se hamesha success hi milti hai. \n*\n1. Sang karne ka purpose hi change ho gaya hai. Hum sang karte hai jo mere indriyo ki trapti karta hai. \n2. Guru ka sang hum unke vachno ka palan karke karte hai. \n3.focus hona chahiye otherwise ye bhakti me path par hum divert ho jayenge. \n4. Dhanya dhanya gaurchand nityanand \n5. Capacity hone ke baad bhi hum apne aap ko rok paye ye hi bal hai. \n6. Chintan se clear hota hai hame kya karna hai. \n7. Vaishnavo apradh se bachna ka ek hi tarika hai wo hai humality. \n8. Deenta ka bhav se hi hum bhagwan ka prem prapt kar sakte hai. \n9.",
+            ImprovementPoints:
+              "mera focus nahi hai , yehi hai bhakti me sabse badi problem.\nApne aap ko hamesha correct samajhna",
+            Prayers:
+              "please give your mercy so that , i can try to do please prabhu ji .\nHumility ke liye kya prayas karu.",
+            Gratitude:
+              "mere akankar ko khatm kar rahe hai bus ye hi samajhne ka prayas kar rhaa hu.\nThank you krishna",
+          },
+        },
+        {
+          "17-Sep-24": {
+            Notes:
+              "1. Jo bhi hum bolte hai usko पहला समझना होगा। \n2. न में तो कर्मो का करता हू और न ही मैं कर्मो से दूर ja सकता हु। \n3. लालच हमे मार देता है। \n4. किसके किया कितना decide Kiya hai ye bhagwan hame batayenge na ki हम जीवन में कुछ डिसाइड karenge। \n5. Jo bhakt hai keval wahi bhagwan ko samajh sakta hai anyatha wo kya hi samjhega bhagwan ko। \n6. Jo galtiyon hue hai uske liye hame repend karna chahiye.\n6.106 ML \n1. कई बार भक्ति में आता है तो वउसको समय नही मिलता है ये कोई नई बात नही है क्योंकि महाप्रभु के भक्तो के साथ भी ये सब हुआ। \n2. प्रचार करेंगे तो मुसीबेट आयेंगे उसके लिए हमे तैयार रहना चाहीए। \n3. भगवान गौर ने नित्यानंद प्रभू के सिर पर पट्टी बांधकर प्रेम व्यक्त किए। \n4. विकट प्रसिस्थि में और अच्छा हो जाता कई बार भक्ति के लिए। \n5. बीमारी में और तपस्या बड़ा देनी है। \n6. दिव्य क्वालिटी से ही हम भगवान को प्लीज कर सकते है अनायथा भगवान की सेवा में तो करोड़ों karoro लोग लगे हुए है। \n7. जीवन की सफलता भगवान को प्रसन्न करना है। \n8. भगवान की प्रतिष्ठा के लिए नित्यानंद प्रभु निरंतन लगे रहते है। \n9. आचार्यों का मूड क्या उसको पकड़ कर jeevan me अपनाने का प्रयास करना चाहीए। \n10. शरीर के साथ उद्धार किया महाप्रभु ने। \n11.",
+            ImprovementPoints:
+              "अपने anartho के karan main bhakti me girta hi chala gaya mujhe sudh hone ke liye bahut prayas karna hai.\nMera gusse me mujhe bhagwan se dur kar diya।",
+            Prayers:
+              "Please bless me main prabhu ji ki prasannta ke liye kuch kar saku.\nभगवान के सिचुएशन di lekin main fail ho gaya। Please bless me kaisa kabhi aapki प्रसन्नता के लिए कुछ कर पाऊं।",
+            Gratitude:
+              "Aapne mujhe pakka hua hai itne blunder ke baad bhi , mujhe praschit karna hai please give your direction.\nThank you krishna for realising me कि मेरी क्या श्तिथि है।",
+          },
+        },
+        {
+          "16-Sep-24": {
+            Notes:
+              "Chatanya Mangal 6.45 \n* Dost ऐसे होने चाहीए जो हमे सेवा में लगाए। \n* अपना डिफेंस करे ये भौतिकता है , भागना जीवन का परपज है परम्परा है। \n* घर में भी लड़ाई हो तो भी भाग जाऊं। \n* समय की बचत है , भौतिकता में पढ़ने से । \n* भौतिक लोगो को हरिनाम का प्रचार करना बहुत ही मुस्कील है इसलिए भक्त हमेशा उनको जोड़ने का प्रयास में लगा रहता है। \n* भगवान का क्रुद्ध में आना हमारे लिए अच्छा है , उसी तरह गुरू का क्रुद्ध होना भी हमारे लिए अच्छा लेकिन फिर भी हमे ऐसा काम नही करना चाहीए \n* हरिनाम करते है तो और कुछ करने की जरूरत नही है। \n* जलूस निकालना जरूरी है , नगर संकीर्तन , दूसरे व्यक्ती को कीर्तन बहुत बुरा लगता है। \n* भगवान के भक्त हमेशा अपने ऊपर दुख लेते है।",
+            ImprovementPoints: "Mera gussa",
+            Prayers: "कृष्ण जीवन के रूप है।",
+            Gratitude:
+              "Prabhu ji mujhe mauka de rahe hai lekin main apni shudhi ke liye kya kar rah ahu.",
+          },
+        },
+        {
+          "15-Sep-24": {
+            Notes:
+              "1. Jab suvidhaye jeevan se हाटा li jati hai तब ये लगता है की जीवन में कुछ नही है। \n2. सभी जगह सिस्टम ही सिस्टम है। \n3. सारे तपस्या का परपज एक ही है - इंद्रियों की शुद्धि। इंद्रियों को वश में करने के लिए। \n4. महनत में करनी चाहीए अन्यथा उसका कुछ use नही है । पानी मांगा ,  फावड़े लिए लग गए इसलिए उसका ठीक नहि है सब। \n5. सब झूठ दिखाते है बॉलीवुड में। \n6. भौतिक इंद्रियों को वश में किया लेकिन भगवान् का ध्यान नहीं किया तो जीवन में सब बेकार हो जायेगा। \n7. जब कोई वस्तु मिलती है तो usmi importance खत्म हो जाति है इसलिए , जीवन में दुख है। \n8.realization aati है जीवन में menial सेवा करने से। \n9.",
+            ImprovementPoints: "इंद्रियों की शुद्धि नही कर रहे है",
+            Prayers:
+              "thank you krishna ki main ye samajh paya ki जीवन में सब मिल रहा है लेकिन सब की वैल्यू नही समझ रहा , उसके लिए मुझे meditation kar pay।",
+            Gratitude:
+              "Thank you prabhu ji jeevan me aasakti हटाकर , कैसे में आपको सेवा का मौका न गवाई।",
+          },
+        },
+      ];
+
+      // Call render function to display the cards
+      renderScrollableCards(data);
+    </script>
+  </body>
+</html>

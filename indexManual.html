@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manual Japa Counter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f7f7f7;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .counter-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: #4caf50;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 36px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .circle.bump {
+        transform: scale(1.1);
+      }
+
+      button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .start-btn {
+        background-color: #2196f3;
+        color: white;
+      }
+
+      .next-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .reset-btn {
+        background-color: #f44336;
+        color: white;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Manual Japa Counter</h2>
+
+    <div class="counter-container">
+      <div id="circle" class="circle">0</div>
+      <button class="start-btn" onclick="startCounter()">Start</button>
+      <button class="next-btn" onclick="incrementCounter()">Next</button>
+      <button class="reset-btn" onclick="resetCounter()">Reset</button>
+    </div>
+
+    <script>
+      let count = 0;
+      let running = false;
+
+      function startCounter() {
+        count = 0;
+        running = true;
+        updateCircle();
+      }
+
+      function incrementCounter() {
+        if (!running) return;
+        count++;
+        updateCircle();
+
+        // 🔗 यहां backend को call कर सकते हैं (जैसे mala complete होने पर)
+        // google.script.run.saveCount(count);
+      }
+
+      function resetCounter() {
+        count = 0;
+        running = false;
+        updateCircle();
+      }
+
+      function updateCircle() {
+        const circle = document.getElementById("circle");
+        circle.textContent = count;
+        circle.classList.add("bump");
+        setTimeout(() => circle.classList.remove("bump"), 200);
+      }
+    </script>
+  </body>
+</html>

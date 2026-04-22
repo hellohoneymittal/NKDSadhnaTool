@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+      }
+      .container {
+        padding: 10px;
+      }
+      .chapter-box {
+        background: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        overflow-x: auto;
+      }
+      .chapter-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .c-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 5px 0;
+      }
+      input[type="number"] {
+        width: 50px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="chapterContainer"></div>
+    <script>
+      const data = {
+        Class1: {
+          English1: {
+            chapter1: { C1: 2, C3: 5, C4: 4 },
+            chapter2: { C1: 3, C2: 6, C3: 2, C5: 2 },
+          },
+        },
+      };
+
+      const chapterContainer = document.getElementById("chapterContainer");
+      const chapters = data.Class1.English1;
+
+      Object.keys(chapters).forEach((chapter) => {
+        let chapterBox = document.createElement("div");
+        chapterBox.classList.add("chapter-box");
+
+        let title = document.createElement("div");
+        title.classList.add("chapter-title");
+        title.innerText = chapter;
+        chapterBox.appendChild(title);
+
+        Object.entries(chapters[chapter]).forEach(([key, value]) => {
+          let item = document.createElement("div");
+          item.classList.add("c-item");
+
+          let label = document.createElement("label");
+          label.innerText = `${key}(${value})`;
+
+          let input = document.createElement("input");
+          input.type = "number";
+          input.max = value;
+          input.min = 0;
+          input.value = 0;
+
+          item.appendChild(label);
+          item.appendChild(input);
+          chapterBox.appendChild(item);
+        });
+        chapterContainer.appendChild(chapterBox);
+      });
+    </script>
+  </body>
+</html>
