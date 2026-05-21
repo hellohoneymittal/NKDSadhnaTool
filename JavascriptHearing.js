@@ -22,6 +22,10 @@ const prayersInputControl = document.getElementById("myPrayersTxtBox");
 const gratitudeInputControl = document.getElementById("myGratitudeTxtBox");
 let lastHearingSaveTime = Date.now();
 let userLoginInfoHearingData = "";
+let withInLocation = false;
+
+const allowedRadius = 150; // meters
+
 const hearingRequestObj = {
   apiType: "",
   isNKDDevotee: "",
@@ -38,6 +42,8 @@ const hearingRequestObj = {
   lectureBy: "",
   topic: "",
   devoteeType: "",
+  areaLeader: "",
+  withInLocation: "",
 };
 let elapsedTimeHearing = 0;
 let timerIntervalHearing;
@@ -84,7 +90,85 @@ function handleInputChange(event) {
   localStorage.setItem(id, value); // Store the value using the element's ID as the key
 }
 
-function openHearingWindow() {
+async function openHearingWindow() {
+  let result;
+
+  //Morning 6–9 → GG
+  //Evening 6–9 → HKB
+  //Sunday 3–7 PM → GG
+  //Baaki default → HKB
+
+  const now = new Date();
+
+  const currentHour = now.getHours();
+  const currentDay = now.getDay(); // 0 = Sunday
+
+  let selectedLat = null;
+  let selectedLong = null;
+  let selectedPlace = "";
+
+  // SUNDAY 3 PM - 7 PM → GG
+  if (currentDay === 0 && currentHour >= 15 && currentHour < 19) {
+    selectedLat = GG_LAT;
+    selectedLong = GG_LONG;
+    selectedPlace = "GG";
+  }
+
+  // MORNING 6 AM - 9 AM → GG
+  else if (currentHour >= 6 && currentHour < 9) {
+    selectedLat = GG_LAT;
+    selectedLong = GG_LONG;
+    selectedPlace = "GG";
+  }
+
+  // EVENING 6 PM - 9 PM → HKB
+  else if (currentHour >= 18 && currentHour < 21) {
+    selectedLat = HKB_LAT;
+    selectedLong = HKB_LONG;
+    selectedPlace = "HKB";
+  }
+
+  if (!selectedLat || !selectedLong) {
+    SHOW_ERROR_POPUP(
+      `❌ Location Verification is Currently Inactive ❌
+        You are still welcome to continue writing and saving your hearing notes.
+        Location will only be checked during the allowed attendance timings.`,
+    );
+    withInLocation = false;
+  } else {
+    withInLocation = true;
+  }
+
+  try {
+    if (withInLocation) {
+      result = await checkLocation(selectedLat, selectedLong, allowedRadius);
+      console.log(result);
+    }
+  } catch (error) {
+    console.error(error);
+    if (error.message) {
+      withInLocation = false;
+      SHOW_ERROR_POPUP(`❌ Action Disallowed ❌\n\nERROR: ${error.message}`);
+    }
+  }
+
+  if (result && result !== 1) {
+    SHOW_ERROR_POPUP(
+      ("❌ Action Disallowed ❌\n\n⚠️ Your current location ${result.split(" %
+        ")[1]} is ${result.split(") %
+        ")[0]} away from Gurukul.\n\nAttendance can only be marked within the school campus., ",
+    );
+    withInLocation = false;
+  } else {
+    if (withInLocation) {
+      SHOW_SUCCESS_POPUP(
+        "✅ Location verified successfully. You are within the permitted campus area.",
+      );
+    }
+
+    console.log(result);
+  }
+
   ShowPopup(hearingContainer);
   HidePopup(mainContainer);
   restoreHearingData();
@@ -222,7 +306,7 @@ async function saveHearingData() {
     );
     hearingRequestObj.prayers = GetControlValue(myPrayersTxtBox);
     hearingRequestObj.gratitude = GetControlValue(myGratitudeTxtBox);
-
+    hearingRequestObj.withInLocation = withInLocation;
     IsLoading(true);
     fetch(SAVE_HEARING_DATA, {
       method: "POST",
@@ -272,7 +356,7 @@ async function saveHearingData() {
         );
         hearingRequestObj.prayers = GetControlValue(myPrayersTxtBox);
         hearingRequestObj.gratitude = GetControlValue(myGratitudeTxtBox);
-
+        hearingRequestObj.withInLocation = withInLocation;
         IsLoading(true);
         fetch(SAVE_HEARING_DATA, {
           method: "POST",
