@@ -153,10 +153,10 @@ async function openHearingWindow() {
   }
 
   if (result && result !== 1) {
+    const distance = result?.split("%")[0];
+    const location = result?.split("%")[1];
     SHOW_ERROR_POPUP(
-      ("❌ Action Disallowed ❌\n\n⚠️ Your current location ${result.split(" %
-        ")[1]} is ${result.split(") %
-        ")[0]} away from Gurukul.\n\nAttendance can only be marked within the school campus., ",
+      `❌ Action Disallowed ❌\n\n⚠️ Your current location ${location} is ${distance} away from Expected Location.\n\nAttendance can only be marked within the Expected Location.`,
     );
     withInLocation = false;
   } else {
