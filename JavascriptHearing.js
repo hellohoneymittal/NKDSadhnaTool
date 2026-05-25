@@ -90,7 +90,7 @@ function handleInputChange(event) {
   localStorage.setItem(id, value); // Store the value using the element's ID as the key
 }
 
-async function openHearingWindow() {
+async function checkHearingLocation() {
   let result;
 
   //Morning 6–9 → GG
@@ -159,26 +159,24 @@ async function openHearingWindow() {
       `❌ Action Disallowed ❌\n\n⚠️ Your current location ${location} is ${distance} away from Expected Location.\n\nAttendance can only be marked within the Expected Location.`,
     );
     withInLocation = false;
-  } else {
-    if (withInLocation) {
-      SHOW_SUCCESS_POPUP(
-        "✅ Location verified successfully. You are within the permitted campus area.",
-      );
-    }
-
-    console.log(result);
   }
 
+  updateLocationStatus(withInLocation);
+}
+
+async function openHearingWindow() {
+  await checkHearingLocation();
   ShowPopup(hearingContainer);
   HidePopup(mainContainer);
   restoreHearingData();
   startHearingTimer();
 }
 
-function handleStartPauseHearing() {
+async function handleStartPauseHearing() {
   if (isHearingTimerRunning) {
     pauseHearingTimer();
   } else {
+    await checkHearingLocation();
     startHearingTimer();
   }
 }
@@ -403,6 +401,8 @@ function resetHearingSession() {
   hearingRequestObj.improvementPoints = "";
   hearingRequestObj.prayers = "";
   hearingRequestObj.gratitude = "";
+  hearingRequestObj.areaLeader = "";
+  hearingRequestObj.withInLocation = "";
 
   // Reset timer-related variables
   elapsedTimeHearing = 0;
@@ -818,4 +818,18 @@ function hearingResetButton() {
     "Do you want to reset hearing notes ?",
     resetHearingForm,
   );
+}
+
+function updateLocationStatus(isInside) {
+  const badge = document.getElementById("locationStatusBadge");
+
+  if (isInside) {
+    badge.classList.remove("outside");
+    badge.classList.add("inside");
+    badge.innerHTML = "📍 Inside Expected Area";
+  } else {
+    badge.classList.remove("inside");
+    badge.classList.add("outside");
+    badge.innerHTML = "⚠️ Outside Expected Area";
+  }
 }
