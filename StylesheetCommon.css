@@ -1220,7 +1220,7 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 10px;
-  max-height: 95vh; /* Adjust for better balance */
+  max-height: 88vh; /* Adjust for better balance */
 }
 
 .scrollable-content-table {
@@ -1272,7 +1272,7 @@ body {
     padding-left: 8px;
     flex-grow: 1;
     overflow-y: auto;
-    max-height: 95vh; /* Adjust for better balance */
+    max-height: 88vh; /* Adjust for better balance */
     margin-bottom: 10px;
   }
   .scrollable-content-table {
