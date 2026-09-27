@@ -656,24 +656,24 @@
             required
           />
 
+          <label for="serviceTxtBox" class="required">
+            पैदल चले कदम (Steps Count) (Yesterday)
+          </label>
+          <input
+            type="text"
+            id="stepsTxtBox"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            placeholder="Enter steps ..."
+            required
+          />
+
           <label for="tdaTxtBox" class="required">
-            मंदिर के लिए दान राशि (Yesterday)
+            मंदिर/ग्रंथ के लिए दान राशि (₹1,100 से कम) (Yesterday)
           </label>
           <input
             type="text"
             id="tdaTxtBox"
-            inputmode="numeric"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            placeholder="Enter the amount ..."
-            required
-          />
-
-          <label for="bdaTxtBox" class="required">
-            ग्रंथ के लिए दान राशि (Yesterday)
-          </label>
-          <input
-            type="text"
-            id="bdaTxtBox"
             inputmode="numeric"
             oninput="this.value = this.value.replace(/[^0-9]/g, '')"
             placeholder="Enter the amount ..."
