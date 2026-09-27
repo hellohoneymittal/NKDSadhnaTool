@@ -133,7 +133,7 @@ const password = "password";
 const saTablePopupKey = "saTablePopup";
 const saPasswordPopupKey = "saPasswordPopup";
 const tdaTxtBox = "tdaTxtBox";
-const bdaTxtBox = "bdaTxtBox";
+const stepsTxtBox = "stepsTxtBox";
 
 let timerInterval;
 let singleStartTime;
@@ -179,7 +179,7 @@ let japaApiRequest = {
   serviceDuration: "",
   devoteeType: "",
   tCollAmount: "",
-  bCollAmount: "",
+  steps: "",
 };
 
 //Attach
@@ -589,7 +589,7 @@ function resetTimer() {
     serviceDuration: "",
     devoteeType: "",
     tCollAmount: "",
-    bCollAmount: "",
+    steps: "",
   };
 }
 
@@ -946,14 +946,14 @@ async function japaSubmitWODBtnClick() {
   const wakeUpTimeSelectRow = GetControlValue(wakeUpTimeSelect);
   const serviceTxtBoxVal = GetControlValue(serviceTxtBox);
   const tdaTxtBoxVal = GetControlValue(tdaTxtBox);
-  const bdaTxtBoxVal = GetControlValue(bdaTxtBox);
+  const stepsTxtBoxVal = GetControlValue(stepsTxtBox);
   const sleepingTimeSelectVal = parseSleepWakeTimeRange(sleepingTimeSelectRow);
   const wakeUpTimeSelectVal = parseSleepWakeTimeRange(wakeUpTimeSelectRow);
   const aartisVal = populateAartiResult();
 
-  if (Number(tdaTxtBoxVal) > 1100 || Number(bdaTxtBoxVal) > 1000) {
+  if (Number(tdaTxtBoxVal) > 1100) {
     SHOW_SUCCESS_POPUP(
-      `Thank you for doing Srila Prabhupada's favorite service.\n\nA maximum amount of ₹2100 is allowed here.\n\nFor larger donations, please use our Donor Detail section :\n\n<span style="color: blue;">NKD Community Website → Donate.</span>`,
+      `Thank you for doing Srila Prabhupada's favorite service.\n\nA maximum amount of ₹1100 is allowed here.\n\nFor larger donations, please use our Donor Detail section :\n\n<a href="https://collections.nkdcommunity.in/" target="_blank" style="color: blue;">https://collections.nkdcommunity.in/</a>`,
     );
     return;
   }
@@ -963,7 +963,7 @@ async function japaSubmitWODBtnClick() {
   japaApiRequest.aartis = aartisVal;
   japaApiRequest.serviceDuration = serviceTxtBoxVal;
   japaApiRequest.tCollAmount = tdaTxtBoxVal;
-  japaApiRequest.bCollAmount = bdaTxtBoxVal;
+  japaApiRequest.steps = stepsTxtBoxVal;
 
   const response = await saveJapaDataAPI(japaApiRequest);
   if (response.status) {
@@ -1170,7 +1170,7 @@ function resetPasswordWindowControl() {
   document.getElementById(serviceTxtBox).value = "";
   document.getElementById(password).value = "";
   document.getElementById(tdaTxtBox).value = "";
-  document.getElementById(bdaTxtBox).value = "";
+  document.getElementById(stepsTxtBox).value = "";
 }
 
 function showSAPasswordPopup() {
