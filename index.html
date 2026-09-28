@@ -622,6 +622,19 @@
             </select>
           </div>
 
+          <label for="stepsTxtBox" class="required">
+            पैदल चले कदम 👣 🚶(Steps Count) (Yesterday)
+          </label>
+
+          <input
+            type="text"
+            id="stepsTxtBox"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            placeholder="👣 Enter steps ..."
+            required
+          />
+
           <div style="margin-bottom: 20px">
             <fieldset>
               <legend>आरतियाँ (Aartiyan) (Yesterday)</legend>
@@ -653,18 +666,6 @@
             inputmode="numeric"
             oninput="this.value = this.value.replace(/[^0-9]/g, '')"
             placeholder="Type in minutes ..."
-            required
-          />
-
-          <label for="serviceTxtBox" class="required">
-            पैदल चले कदम (Steps Count) (Yesterday)
-          </label>
-          <input
-            type="text"
-            id="stepsTxtBox"
-            inputmode="numeric"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            placeholder="Enter steps ..."
             required
           />
 
