@@ -604,8 +604,8 @@ function CLOSE_CONFIRMATION_GRID_POPUP() {
 
 async function API_HANDLER_AXIOS(request) {
   try {
-    const url =
-      "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+    const url = APPLICATION_URL;
+
     IsLoading(true); // Start loading
     const jsonReq = JSON.stringify(request);
     const response = await axios.post(url, jsonReq);
@@ -631,8 +631,7 @@ async function API_HANDLER_AXIOS(request) {
 
 async function API_HANDLER_WITHOUT_LOADING_AXIOS(request) {
   try {
-    const url =
-      "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+    const url = APPLICATION_URL;
 
     const jsonReq = JSON.stringify(request);
     const response = await axios.post(url, jsonReq);
@@ -947,6 +946,33 @@ async function CALL_API_WITHOUT_LOADING(apiType, data) {
   } catch (ex) {
     SHOW_ERROR_POPUP("Error :- " + ex);
   }
+}
+
+let currentWriteRequestId = null;
+
+function GENERATE_IDEMPOTENCY_KEY() {
+  //return crypto.randomUUID();
+  return "d6a77e86-1060-4d67-b4f3-ba8364bf70bb";
+}
+
+async function CALL_API_WRITE(apiType, inputData = {}) {
+  if (!currentWriteRequestId) {
+    currentWriteRequestId = GENERATE_IDEMPOTENCY_KEY();
+  }
+
+  let updatedData = {
+    ...inputData,
+    requestId: currentWriteRequestId,
+  };
+
+  const response = await CALL_API(apiType, updatedData);
+
+  // Request successfully completed
+  if (response?.status === true || response?.status === "success") {
+    currentWriteRequestId = null;
+  }
+
+  return response;
 }
 
 function MAP_HEADERS_TO_VALUES_BY_KEYED_GROUP(dataByGroup, ignoreKeys = []) {
