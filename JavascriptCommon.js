@@ -951,8 +951,7 @@ async function CALL_API_WITHOUT_LOADING(apiType, data) {
 let currentWriteRequestId = null;
 
 function GENERATE_IDEMPOTENCY_KEY() {
-  //return crypto.randomUUID();
-  return "d6a77e86-1060-4d67-b4f3-ba8364bf70bb";
+  return crypto.randomUUID();
 }
 
 async function CALL_API_WRITE(apiType, inputData = {}) {
@@ -970,6 +969,27 @@ async function CALL_API_WRITE(apiType, inputData = {}) {
   // Request successfully completed
   if (response?.status === true || response?.status === "success") {
     currentWriteRequestId = null;
+  }
+
+  return response;
+}
+
+async function CALL_API_READ(apiType, inputData = {}) {
+  let response;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    console.log(`API READ Attempt ${attempt}/3 : ${apiType}`);
+
+    response = await CALL_API(apiType, inputData);
+
+    if (response?.status) {
+      console.log(`API READ Success on Attempt ${attempt} : ${apiType}`);
+      break;
+    }
+
+    if (attempt < 3) {
+      console.log(`API READ failed. Retrying... : ${apiType}`);
+    }
   }
 
   return response;
