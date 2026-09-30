@@ -33,6 +33,7 @@ async function internalCallMonthlyAvgAPI() {
       };
       japaAVGApiRequest.inputData = inputData;
       const jsonReq = JSON.stringify(japaAVGApiRequest);
+
       const response = await axios.post(GET_JAPA_MONTHLY_AVG, jsonReq);
       const data = response?.data;
       if (data?.result?.length > 9) {

@@ -19,6 +19,8 @@ const GET_SADHNA_REPORT_DATA_API =
   "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
 const GET_JAPA_MONTHLY_AVG =
   "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+const APPLICATION_URL =
+  "https://script.google.com/macros/s/AKfycbwJlpVuVs0jS2FVmr4ZIfkJMRSX8DNQTyn1wCwPGG8ab8s17WcGDrCvAPHy3It6xU-h/exec";
 
 //others
 const DATE_FORMAT_CONSTANT = {

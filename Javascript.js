@@ -824,111 +824,117 @@ async function submitPassword() {
     const response = await saveJapaDataAPI(japaApiRequest);
     const currentDay = new Date().getDay();
 
-    if (response.status) {
-      const lapTimes = lapTimesArrGbl;
-      let lapsObj = calculateStats(lapTimes);
-      lapsObj = {
-        ...lapsObj,
-        userName: userLoginInfoData?.devName,
-      };
-      populateStatsContainer(lapsObj);
-      HidePopup(passwordPopup);
-      successPopupReport.style.display = "flex"; // Show the popup
-      resetTimer();
-      resetPasswordWindowControl();
-    } else if (!response.status && response.result == "infoNeeded") {
-      if (IS_KARTIK_DATA_VISIABLE) {
+    if (response?.status) {
+      if (response?.data === "infoNeeded") {
+        if (IS_KARTIK_DATA_VISIABLE) {
+          HidePopup(passwordPopup);
+          ShowPopup("kartikContainer");
+        } else if (currentDay === 6) {
+          SHOW_SPECIFIC_DIV("saturdayContainer");
+        } else if (currentDay === 0) {
+          SHOW_SPECIFIC_DIV("sundayContainer");
+        } else {
+          ShowPopup("otherJapaDetailPopup");
+          if (
+            userLoginInfoData?.devoteeType == DEVOTEE_TYPE_CONSTANT.ggStudent
+          ) {
+            updateSelectOptions("sleepingTimeSelect", GG_SLEEP_OPTIONS);
+            updateSelectOptions("wakeUpTimeSelect", GG_WAKEUP_OPTIONS);
+          }
+          disabledButtonState("otherJapaDetailPopup", "japaSubmitWODBtn");
+        }
+      } else {
+        const lapTimes = lapTimesArrGbl;
+        let lapsObj = calculateStats(lapTimes);
+        lapsObj = {
+          ...lapsObj,
+          userName: userLoginInfoData?.devName,
+        };
+        populateStatsContainer(lapsObj);
         HidePopup(passwordPopup);
-        ShowPopup("kartikContainer");
-      } else if (currentDay === 6) {
-        SHOW_SPECIFIC_DIV("saturdayContainer");
-      } else if (currentDay === 0) {
-        SHOW_SPECIFIC_DIV("sundayContainer");
-      } else {
-        ShowPopup("otherJapaDetailPopup");
-        if (userLoginInfoData?.devoteeType == DEVOTEE_TYPE_CONSTANT.ggStudent) {
-          updateSelectOptions("sleepingTimeSelect", GG_SLEEP_OPTIONS);
-          updateSelectOptions("wakeUpTimeSelect", GG_WAKEUP_OPTIONS);
-        }
-        disabledButtonState("otherJapaDetailPopup", "japaSubmitWODBtn");
+        successPopupReport.style.display = "flex"; // Show the popup
+        resetTimer();
+        resetPasswordWindowControl();
       }
-    }
-  } else {
-    if (password) {
-      IsLoading(true);
-      const passwordAPIresponse = await checkPassword(password);
-      IsLoading(false);
-      if (!passwordAPIresponse.devName) {
-        SHOW_ERROR_POPUP("Please enter a correct password");
-        return false;
-      } else {
-        const lastRoundStatus = handleLastRoundDuringSubmit();
-        if (!lastRoundStatus) {
-          SHOW_ERROR_POPUP(MESSAGE_CONSTANT.noJapaChantedError);
-          HidePopup(passwordPopup);
-          return;
-        }
-        const date = new Date().toISOString();
-        const lapsElements = lapsContainer.querySelectorAll("div");
-
-        lapsElementsDiv = lapsElements;
-
-        const laps = Array.from(lapsElements).map((div) => {
-          const lapText = div.textContent.trim();
-          const time24 = div.dataset.time24 || "";
-          return `${lapText} - ${time24}`;
-        });
-
-        let totalRound = laps[0].split(" ")[1];
-
-        japaApiRequest.devoteeType = passwordAPIresponse.devoteeType;
-        japaApiRequest.isNKDDevotee = passwordAPIresponse.isNKDDevotee;
-        japaApiRequest.date = date;
-        japaApiRequest.password = password;
-        japaApiRequest.devName = passwordAPIresponse.devName;
-        japaApiRequest.startTimestamp = startDateDB;
-        japaApiRequest.endTimestamp = endDateDB; // Send the end timestamp
-        japaApiRequest.japaDuration = japaDuration;
-        japaApiRequest.totalRound = totalRound;
-        japaApiRequest.laps = laps;
-        japaApiRequest.pauseCount = pauseCount;
-        japaApiRequest.before9Round = before9RoundGbl;
-        japaApiRequest.areaLeader = passwordAPIresponse.areaLeader;
-
-        console.log(japaApiRequest);
-        const response = await saveJapaDataAPI(japaApiRequest);
-        let currentDay = new Date().getDay();
-
-        if (response.status) {
-          const lapTimes = lapTimesArrGbl;
-          let lapsObj = calculateStats(lapTimes);
-          lapsObj = {
-            ...lapsObj,
-            userName: passwordAPIresponse.devName,
-          };
-          populateStatsContainer(lapsObj);
-          HidePopup(passwordPopup);
-          successPopupReport.style.display = "flex"; // Show the popup
-          resetTimer();
-          resetPasswordWindowControl();
-        } else if (!response.status && response.result == "infoNeeded") {
-          if (IS_KARTIK_DATA_VISIABLE) {
+    } else {
+      if (password) {
+        IsLoading(true);
+        const passwordAPIresponse = await checkPassword(password);
+        IsLoading(false);
+        if (!passwordAPIresponse.devName) {
+          SHOW_ERROR_POPUP("Please enter a correct password");
+          return false;
+        } else {
+          const lastRoundStatus = handleLastRoundDuringSubmit();
+          if (!lastRoundStatus) {
+            SHOW_ERROR_POPUP(MESSAGE_CONSTANT.noJapaChantedError);
             HidePopup(passwordPopup);
-            ShowPopup("kartikContainer");
-          } else if (currentDay === 6) {
-            SHOW_SPECIFIC_DIV("saturdayContainer");
-          } else if (currentDay === 0) {
-            SHOW_SPECIFIC_DIV("sundayContainer");
-          } else {
-            ShowPopup("otherJapaDetailPopup");
-            if (
-              passwordAPIresponse?.devoteeType ==
-              DEVOTEE_TYPE_CONSTANT.ggStudent
-            ) {
-              updateSelectOptions("sleepingTimeSelect", GG_SLEEP_OPTIONS);
-              updateSelectOptions("wakeUpTimeSelect", GG_WAKEUP_OPTIONS);
+            return;
+          }
+          const date = new Date().toISOString();
+          const lapsElements = lapsContainer.querySelectorAll("div");
+
+          lapsElementsDiv = lapsElements;
+
+          const laps = Array.from(lapsElements).map((div) => {
+            const lapText = div.textContent.trim();
+            const time24 = div.dataset.time24 || "";
+            return `${lapText} - ${time24}`;
+          });
+
+          let totalRound = laps[0].split(" ")[1];
+
+          japaApiRequest.devoteeType = passwordAPIresponse.devoteeType;
+          japaApiRequest.isNKDDevotee = passwordAPIresponse.isNKDDevotee;
+          japaApiRequest.date = date;
+          japaApiRequest.password = password;
+          japaApiRequest.devName = passwordAPIresponse.devName;
+          japaApiRequest.startTimestamp = startDateDB;
+          japaApiRequest.endTimestamp = endDateDB; // Send the end timestamp
+          japaApiRequest.japaDuration = japaDuration;
+          japaApiRequest.totalRound = totalRound;
+          japaApiRequest.laps = laps;
+          japaApiRequest.pauseCount = pauseCount;
+          japaApiRequest.before9Round = before9RoundGbl;
+          japaApiRequest.areaLeader = passwordAPIresponse.areaLeader;
+
+          console.log(japaApiRequest);
+          const response = await saveJapaDataAPI(japaApiRequest);
+          let currentDay = new Date().getDay();
+
+          if (response?.status) {
+            if (response?.data == "infoNeeded") {
+              if (IS_KARTIK_DATA_VISIABLE) {
+                HidePopup(passwordPopup);
+                ShowPopup("kartikContainer");
+              } else if (currentDay === 6) {
+                SHOW_SPECIFIC_DIV("saturdayContainer");
+              } else if (currentDay === 0) {
+                SHOW_SPECIFIC_DIV("sundayContainer");
+              } else {
+                ShowPopup("otherJapaDetailPopup");
+                if (
+                  passwordAPIresponse?.devoteeType ==
+                  DEVOTEE_TYPE_CONSTANT.ggStudent
+                ) {
+                  updateSelectOptions("sleepingTimeSelect", GG_SLEEP_OPTIONS);
+                  updateSelectOptions("wakeUpTimeSelect", GG_WAKEUP_OPTIONS);
+                }
+                disabledButtonState("otherJapaDetailPopup", "japaSubmitWODBtn");
+              }
+            } else {
+              const lapTimes = lapTimesArrGbl;
+              let lapsObj = calculateStats(lapTimes);
+              lapsObj = {
+                ...lapsObj,
+                userName: passwordAPIresponse.devName,
+              };
+              populateStatsContainer(lapsObj);
+              HidePopup(passwordPopup);
+              successPopupReport.style.display = "flex"; // Show the popup
+              resetTimer();
+              resetPasswordWindowControl();
             }
-            disabledButtonState("otherJapaDetailPopup", "japaSubmitWODBtn");
           }
         }
       }
@@ -1479,14 +1485,10 @@ async function saveJapaDataAPI(request) {
   const onlineRes = await IS_ONLINE();
   if (onlineRes) {
     try {
-      IsLoading(true);
-      const jsonReq = JSON.stringify(request);
-      const response = await axios.post(SAVE_JAPA_DATA, jsonReq);
-      const data = response?.data;
-      IsLoading(false); // Stop loading
-      return data;
+      debugger;
+      const response = await CALL_API_WRITE("SAVE_JAPA_DATA", request);
+      return response;
     } catch (error) {
-      IsLoading(false); // Stop loading on error
       console.log(error);
       SHOW_ERROR_POPUP(error.message);
     } finally {
@@ -1500,6 +1502,7 @@ function OpenInitialRegistration() {
 }
 
 function updatePasswordRefInApp(passwordAPIresponse) {
+  debugger;
   if (passwordAPIresponse?.status && passwordAPIresponse?.devName) {
     let loginUser = "";
     if (passwordAPIresponse.devoteeType == DEVOTEE_TYPE_CONSTANT.ggStudent) {
