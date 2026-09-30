@@ -427,12 +427,12 @@ function recordLap() {
   const lapTimeSeconds = timeToSeconds(formattedLapTime);
   const avgTimeSeconds = timeToSeconds(monthlyAverage);
 
-  if (lapTimeSeconds < 300) {
-    SHOW_ERROR_POPUP(
-      `Current japa time is ${formattedLapTime}. Japa time must be more than 5 minutes. Please chant attentively.`,
-    );
-    return;
-  }
+  // if (lapTimeSeconds < 300) {
+  //   SHOW_ERROR_POPUP(
+  //     `Current japa time is ${formattedLapTime}. Japa time must be more than 5 minutes. Please chant attentively.`,
+  //   );
+  //   return;
+  // }
 
   lapTimesArrGbl.push(formattedLapTime);
   lapTime = elapsedTime;
