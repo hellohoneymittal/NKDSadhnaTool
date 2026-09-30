@@ -948,27 +948,55 @@ async function CALL_API_WITHOUT_LOADING(apiType, data) {
   }
 }
 
-let currentWriteRequestId = null;
+const WRITE_REQUEST_KEY = "currentWriteRequest";
 
 function GENERATE_IDEMPOTENCY_KEY() {
   return crypto.randomUUID();
 }
 
-async function CALL_API_WRITE(apiType, inputData = {}) {
-  if (!currentWriteRequestId) {
-    currentWriteRequestId = GENERATE_IDEMPOTENCY_KEY();
+function GET_CURRENT_WRITE_REQUEST_ID(apiType) {
+  const stored = sessionStorage.getItem(WRITE_REQUEST_KEY);
+
+  if (stored) {
+    const data = JSON.parse(stored);
+
+    // Same API → reuse same requestId
+    if (data.apiType === apiType) {
+      return data.requestId;
+    }
   }
 
-  let updatedData = {
+  // New API or no existing request
+  const requestId = GENERATE_IDEMPOTENCY_KEY();
+
+  sessionStorage.setItem(
+    WRITE_REQUEST_KEY,
+    JSON.stringify({
+      apiType: apiType,
+      requestId: requestId,
+    }),
+  );
+
+  return requestId;
+}
+
+function CLEAR_CURRENT_WRITE_REQUEST_ID() {
+  sessionStorage.removeItem(WRITE_REQUEST_KEY);
+}
+
+async function CALL_API_WRITE(apiType, inputData = {}) {
+  const requestId = GET_CURRENT_WRITE_REQUEST_ID(apiType);
+
+  const updatedData = {
     ...inputData,
-    requestId: currentWriteRequestId,
+    requestId,
   };
 
   const response = await CALL_API(apiType, updatedData);
 
-  // Request successfully completed
+  // Actual operation completed
   if (response?.status === true || response?.status === "success") {
-    currentWriteRequestId = null;
+    CLEAR_CURRENT_WRITE_REQUEST_ID();
   }
 
   return response;
