@@ -220,3 +220,17 @@ const GG_LONG = 77.43753484576277;
 
 const HKB_LAT = 28.655359027467814;
 const HKB_LONG = 77.44110269248928;
+
+const INDEX_DB = {
+  dbName: "NKDSadhnaAppDB",
+  storeName: "SadhnaAppDBStore",
+
+  keys: {
+    LOGIN: "userLoginInfo",
+    TASK_LIST: "taskListData",
+    TASK_MASTER: "taskMasterData",
+    USER_PROFILE: "userProfile",
+    SETTINGS: "settings",
+    APP_VERSION: "appVersion",
+  },
+};

@@ -205,7 +205,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
   switch (key) {
     case -1: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         onPendingMCQButtonClick();
       } else {
         ShowPopup("otherLinkPasswordPopup");
@@ -324,7 +324,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     //for BG Book MCQ
     case 14: {
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         let password = userLoginInfoData?.password;
         pendingBGBookMCQPopulate(password, selectedKey);
       } else {
@@ -398,7 +398,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 3: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your small book MCQ Result?",
           onSmallBookMCQResultClick,
@@ -411,7 +411,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 6: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your BG Lecture MCQ Result?",
           () =>
@@ -425,7 +425,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 9: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your SB Lecture MCQ Result?",
           () =>
@@ -439,7 +439,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 12: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your CB Lecture MCQ Result?",
           () =>
@@ -453,7 +453,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 15: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your BG Book MCQ Result?",
           () =>
@@ -467,7 +467,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 18: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your Other Lectures MCQ Result?",
           () =>
@@ -484,7 +484,7 @@ async function onBookLinkItemClick(id, parentId, headlingTitle, bookTitle) {
 
     case 21: {
       resetMCQControls();
-      if (getUserLoginInfo()) {
+      if (await getUserLoginInfo()) {
         SHOW_CONFIRMATION_POPUP(
           "Do you want to check your Brihad Bhavatam Lectures MCQ Result?",
           () => onLectureMCQResultClick("", "GET_BRIHAD_BHAGAVATAM_MCQ_RESULT"),
@@ -525,7 +525,7 @@ async function pendingBGBookMCQPopulate(password, key) {
 }
 
 async function onSmallBookMCQResultClick(password) {
-  getUserLoginInfo();
+  await getUserLoginInfo();
   let devName = "";
 
   if (password) {
@@ -551,7 +551,7 @@ async function onSmallBookMCQResultClick(password) {
 }
 
 async function onPendingMCQButtonClick(password) {
-  getUserLoginInfo();
+  await getUserLoginInfo();
   let devName = "";
 
   if (password) {

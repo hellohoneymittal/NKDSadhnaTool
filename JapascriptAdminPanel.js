@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     "crContainerNameULList",
     function (selectedText) {
       selectedSewaKartaName = selectedText;
-    }
+    },
   );
 
   setupLiveSearch(
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     "adminCustNameULList",
     function (selectedText) {
       selectedUserForBook = selectedText;
-    }
+    },
   );
 });
 
@@ -71,7 +71,7 @@ const passRoleMap = {
   ],
 };
 async function requestAdminPanel() {
-  if (getUserLoginInfo()) {
+  if (await getUserLoginInfo()) {
     let password = userLoginInfoData?.password;
     if (!devoteeList) {
       const response = await CALL_API("GET_ALL_DEVOTEES_LIST", {});
@@ -92,7 +92,7 @@ function proceedAdminPanel(password) {
     SHOW_SPECIFIC_DIV("adminPanelContainerPopup");
 
     const container = document.querySelector(
-      "#adminPanelContainerPopup .popup-content"
+      "#adminPanelContainerPopup .popup-content",
     );
     container.innerHTML = "";
     container.style.display = "block";
@@ -161,7 +161,7 @@ async function issueBookClick() {
     "adminCustName",
     "adminCustNameClrBtn",
     "adminCustNameULList",
-    devoteeList
+    devoteeList,
   );
 }
 
@@ -170,7 +170,7 @@ async function sDonationCashRecdClick() {
     "crContainerName",
     "crContainerNameClrBtn",
     "crContainerNameULList",
-    devoteeList
+    devoteeList,
   );
 
   SHOW_SPECIFIC_DIV("sDonationCashRecdContianer");
@@ -260,7 +260,7 @@ function deleteBookRow(name) {
 function clearAdminBookFields() {
   SHOW_CONFIRMATION_POPUP(
     "Do you want to clear all ?",
-    ex_clearAdminBookFields
+    ex_clearAdminBookFields,
   );
 }
 
