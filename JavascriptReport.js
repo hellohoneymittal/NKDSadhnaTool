@@ -3,10 +3,15 @@ const japaPrevReportPopup = document.getElementById("japaPrevReportPopup");
 let userLoginInfoDataRpt = "";
 let passwordForReport = "";
 let areaLeaderReport = "";
-function getUserLoginInfoRpt() {
-  const storedData = localStorage.getItem("userLoginInfo");
+async function getUserLoginInfoRpt() {
+  const storedData = await DB_GET(
+    INDEX_DB.keys.LOGIN,
+    INDEX_DB.dbName,
+    INDEX_DB.storeName,
+  );
+
   if (storedData) {
-    userLoginInfoDataRpt = JSON.parse(storedData);
+    userLoginInfoDataRpt = storedData;
     return true;
   } else {
     return false;
@@ -20,7 +25,7 @@ function openPasswordReportPopup() {
     SHOW_CONFIRMATION_POPUP(
       "Do you want to see japa report?",
       handleReportSubmitPassword,
-      handleBackConfirmPopup
+      handleBackConfirmPopup,
     );
   } else {
     ShowPopup(passwordReportPopup);

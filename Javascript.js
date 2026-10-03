@@ -224,7 +224,7 @@ function showNextSentence() {
 
 displaySentence();
 
-function loadTimerState() {
+async function loadTimerState() {
   const savedElapsedTime = localStorage.getItem("elapsedTime");
   const savedLapTime = localStorage.getItem("lapTime");
   const savedLapsData = JSON.parse(localStorage.getItem("lapsData") || "[]");
@@ -233,9 +233,12 @@ function loadTimerState() {
   const savedOriginalStartTime = localStorage.getItem(startTimestampKey);
   const savedPauseCount = localStorage.getItem(pauseCountKey);
   const savedBefore9Round = localStorage.getItem(before9RoundKey);
-  const savedUserInfo = JSON.parse(
-    localStorage.getItem("userLoginInfo") || "{}",
+  const savedUserInfo = await DB_GET(
+    INDEX_DB.keys.LOGIN,
+    INDEX_DB.dbName,
+    INDEX_DB.storeName,
   );
+
   if (savedOriginalStartTime) {
     const savedDate = convertTimeStampToDate(savedOriginalStartTime);
     const today = new Date();
@@ -420,6 +423,7 @@ function recordLap() {
 
   const selectedRadio = document.querySelector(
     'input[name="optradio"]:checked',
+    DB_OPEN_INTERNAL,
   );
 
   const formattedLapTime = calculateLapTime(elapsedTime, lapTime);
@@ -427,12 +431,12 @@ function recordLap() {
   const lapTimeSeconds = timeToSeconds(formattedLapTime);
   const avgTimeSeconds = timeToSeconds(monthlyAverage);
 
-  // if (lapTimeSeconds < 300) {
-  //   SHOW_ERROR_POPUP(
-  //     `Current japa time is ${formattedLapTime}. Japa time must be more than 5 minutes. Please chant attentively.`,
-  //   );
-  //   return;
-  // }
+  if (lapTimeSeconds < 300) {
+    SHOW_ERROR_POPUP(
+      `Current japa time is ${formattedLapTime}. Japa time must be more than 5 minutes. Please chant attentively.`,
+    );
+    return;
+  }
 
   lapTimesArrGbl.push(formattedLapTime);
   lapTime = elapsedTime;
@@ -512,10 +516,10 @@ function calculateLapTime(elapsedTime, lapTime) {
 }
 //#endregion
 
-function stopTimer() {
+async function stopTimer() {
   cleartTimerInterVal(timerInterval);
 
-  if (getUserLoginInfo()) {
+  if (await getUserLoginInfo()) {
     SHOW_CONFIRMATION_POPUP(
       "Do you want to submit your japa?",
       submitPassword,
@@ -599,7 +603,7 @@ function hideOtherJapaDetailPopup() {
   revertSelectOptions("wakeUpTimeSelect", ORIGNAL_WAKEUP_OPTIONS);
 }
 
-function saveTimerState() {
+async function saveTimerState() {
   const now = Date.now();
   if (now - lastSaveTime > 5000) {
     // Save every second
@@ -611,7 +615,12 @@ function saveTimerState() {
     if (userLoginInfoData?.devName) {
       userLoginInfoData.todayDateTime = getTodayDateTimeIST();
 
-      localStorage.setItem("userLoginInfo", JSON.stringify(userLoginInfoData));
+      await DB_SET(
+        INDEX_DB.keys.LOGIN,
+        userLoginInfoData,
+        INDEX_DB.dbName,
+        INDEX_DB.storeName,
+      );
     }
   }
 }
@@ -1179,8 +1188,8 @@ function resetPasswordWindowControl() {
   document.getElementById(stepsTxtBox).value = "";
 }
 
-function showSAPasswordPopup() {
-  if (getUserLoginInfo()) {
+async function showSAPasswordPopup() {
+  if (await getUserLoginInfo()) {
     SHOW_CONFIRMATION_POPUP(
       "Do you want to check your past sadhna?",
       saPasswordPopupBtnClick,
@@ -1417,13 +1426,18 @@ function showSunButtonResult() {
   SHOW_SPECIFIC_DIV("otherJapaDetailPopup");
 }
 
-function getUserLoginInfo() {
+async function getUserLoginInfo() {
   if (userLoginInfoData?.devName) {
     return true;
   } else {
-    const storedData = localStorage.getItem("userLoginInfo");
+    const storedData = await DB_GET(
+      INDEX_DB.keys.LOGIN,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+    );
+    debugger;
     if (storedData) {
-      userLoginInfoData = JSON.parse(storedData);
+      userLoginInfoData = storedData;
       return true;
     } else {
       return false;
@@ -1501,7 +1515,7 @@ function OpenInitialRegistration() {
   SHOW_SPECIFIC_DIV("registrationContainer");
 }
 
-function updatePasswordRefInApp(passwordAPIresponse) {
+async function updatePasswordRefInApp(passwordAPIresponse) {
   debugger;
   if (passwordAPIresponse?.status && passwordAPIresponse?.devName) {
     let loginUser = "";
@@ -1518,7 +1532,13 @@ function updatePasswordRefInApp(passwordAPIresponse) {
     };
     userLoginInfoData = passwordAPIresponse;
     setLoginUserNameDiv(loginUser);
-    localStorage.setItem("userLoginInfo", JSON.stringify(passwordResponse));
+
+    await DB_SET(
+      INDEX_DB.keys.LOGIN,
+      passwordResponse,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+    );
 
     let button = document.getElementById("initialLoginLogout");
     button.textContent = "Logout";
@@ -1871,8 +1891,8 @@ async function handleSubmitGlorification() {
   }
 }
 
-function openGlorificationPanel() {
-  if (getUserLoginInfo()) {
+async function openGlorificationPanel() {
+  if (await getUserLoginInfo()) {
     call_openGlorificationPanel();
   } else {
     ShowPopup("gfPasswordPopup");

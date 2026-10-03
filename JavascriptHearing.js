@@ -74,10 +74,14 @@ document
   .getElementById("myGratitudeTxtBox")
   .addEventListener("input", handleInputChange);
 
-function getHearingUserLoginInfo() {
-  const storedData = localStorage.getItem("userLoginInfo");
+async function getHearingUserLoginInfo() {
+  const storedData = await DB_GET(
+    INDEX_DB.keys.LOGIN,
+    INDEX_DB.dbName,
+    INDEX_DB.storeName,
+  );
   if (storedData) {
-    userLoginInfoHearingData = JSON.parse(storedData);
+    userLoginInfoHearingData = storedData;
     return true;
   } else {
     return false;
@@ -198,7 +202,7 @@ function startHearingTimer() {
   }, 1000);
 }
 
-function saveHearingTimerState() {
+async function saveHearingTimerState() {
   const now = Date.now();
   if (now - lastHearingSaveTime > 5000) {
     // Save every second
@@ -213,9 +217,11 @@ function saveHearingTimerState() {
         todayDateTime: getTodayDateTimeIST(),
       };
 
-      localStorage.setItem(
-        "userLoginInfo",
-        JSON.stringify(updatedUserLoginInfoHearingData),
+      await DB_SET(
+        INDEX_DB.keys.LOGIN,
+        updatedUserLoginInfoHearingData,
+        INDEX_DB.dbName,
+        INDEX_DB.storeName,
       );
     }
   }

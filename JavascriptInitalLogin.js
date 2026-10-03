@@ -5,7 +5,7 @@ async function ipSubmitBtnClick() {
     IsLoading(true);
 
     const passwordAPIresponse = await checkPassword(
-      ipTxtBoxValue.toString().trim()
+      ipTxtBoxValue.toString().trim(),
     );
     IsLoading(false);
     console.log(passwordAPIresponse);
@@ -23,7 +23,13 @@ async function ipSubmitBtnClick() {
         todayDateTime: getTodayDateTimeIST(),
       };
       setLoginUserNameDiv(loginUser);
-      localStorage.setItem("userLoginInfo", JSON.stringify(passwordResponse));
+
+      await DB_SET(
+        INDEX_DB.keys.LOGIN,
+        passwordResponse,
+        INDEX_DB.dbName,
+        INDEX_DB.storeName,
+      );
       button.textContent = "Logout";
       SHOW_SPECIFIC_DIV("mainContainer");
       setUserNameOnFrontScreen(loginUser);
@@ -43,22 +49,23 @@ function setLoginUserNameDiv(userName) {
   loginUserLabel.innerHTML = `<strong>${userName}</strong>`; // Set the username in bold
 }
 
-function OpenInitialLoginWindow() {
+async function OpenInitialLoginWindow() {
   let button = document.getElementById("initialLoginLogout");
   if (button.textContent.trim() === "Login") {
     resetTimer();
     resetReadingForm();
     resetHearingForm();
-    localStorage.removeItem("userLoginInfo");
+    await DB_DELETE(INDEX_DB.keys.LOGIN, INDEX_DB.dbName, INDEX_DB.storeName);
+
     SHOW_SPECIFIC_DIV("initailPasswordPopup");
   } else {
     SHOW_CONFIRMATION_POPUP("Do you want to logout?", initialLogoutByUser);
   }
 }
 
-function initialLogoutByUser() {
+async function initialLogoutByUser() {
   let button = document.getElementById("initialLoginLogout");
-  localStorage.removeItem("userLoginInfo");
+  await DB_DELETE(INDEX_DB.keys.LOGIN, INDEX_DB.dbName, INDEX_DB.storeName);
   button.textContent = "Login";
   document.title = "Sadhna App";
   resetTimer();

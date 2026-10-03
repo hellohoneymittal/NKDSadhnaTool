@@ -7,7 +7,7 @@ let japaAVGApiRequest = {
 };
 
 async function openJapaWindow() {
-  if (getUserLoginInfo()) {
+  if (await getUserLoginInfo()) {
     internalCallMonthlyAvgAPI();
   } else {
     SHOW_SPECIFIC_DIV("passwordPopupAvgWindow");

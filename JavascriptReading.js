@@ -48,10 +48,14 @@ function saveReadingDataOnChange() {
   localStorage.setItem("readingNotes", notes);
 }
 
-function getReadingUserLoginInfo() {
-  const storedData = localStorage.getItem("userLoginInfo");
+async function getReadingUserLoginInfo() {
+  const storedData = await DB_GET(
+    INDEX_DB.keys.LOGIN,
+    INDEX_DB.dbName,
+    INDEX_DB.storeName,
+  );
   if (storedData) {
-    userLoginInfoReadingData = JSON.parse(storedData);
+    userLoginInfoReadingData = storedData;
     return true;
   } else {
     return false;
@@ -126,7 +130,7 @@ function startReadingTimer() {
   }, 1000);
 }
 
-function saveReadingTimerState() {
+async function saveReadingTimerState() {
   const now = Date.now();
   if (now - lastReadingSaveTime > 3000) {
     localStorage.setItem("startTimestampReading", startTimestampReading);
@@ -140,9 +144,11 @@ function saveReadingTimerState() {
         todayDateTime: getTodayDateTimeIST(),
       };
 
-      localStorage.setItem(
-        "userLoginInfo",
-        JSON.stringify(updatedUserLoginInfoReadingData),
+      await DB_SET(
+        INDEX_DB.keys.LOGIN,
+        updatedUserLoginInfoReadingData,
+        INDEX_DB.dbName,
+        INDEX_DB.storeName,
       );
     }
   }
