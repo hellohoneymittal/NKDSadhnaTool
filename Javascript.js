@@ -574,6 +574,7 @@ function resetTimer() {
   manualJapaCount = 0;
   document.getElementById("countCircle").textContent =
     `${manualJapaCount} / 108`;
+  renderManualMala(manualJapaCount, false);
   japaApiRequest = {
     apiType: "SAVE_JAPA_DATA",
     isNKDDevotee: "",
@@ -1706,11 +1707,39 @@ function incrementCount() {
   }
 
   display.textContent = `${manualJapaCount} / 108`;
+  renderManualMala(manualJapaCount);
 
   // Small vibration feedback
   if (navigator.vibrate) {
     navigator.vibrate(70);
   }
+}
+
+const MANUAL_MALA_BEADS = 108;
+let lastManualMalaCount = 0;
+
+// Turns the manual-japa mala so the next bead sits under the top pointer,
+// lights the beads already chanted, and plays a tap / round-complete effect.
+function renderManualMala(count, animate = true) {
+  const mala = document.getElementById("manualMala");
+  const beadGroup = document.getElementById("manualMalaBeads");
+  if (!mala || !beadGroup) return;
+
+  beadGroup.querySelectorAll("circle").forEach((bead, i) => {
+    bead.classList.toggle("is-done", i < count);
+    bead.classList.toggle("is-current", i === count);
+  });
+  beadGroup.style.transform = `rotate(${(-360 * count) / MANUAL_MALA_BEADS}deg)`;
+  document.getElementById("manualMalaNum").textContent = count;
+
+  mala.classList.remove("is-tapped", "is-complete");
+  if (animate) {
+    void mala.offsetWidth; // restart the CSS animation
+    mala.classList.add(
+      count === 0 && lastManualMalaCount > 0 ? "is-complete" : "is-tapped",
+    );
+  }
+  lastManualMalaCount = count;
 }
 
 async function call_openGlorificationPanel() {

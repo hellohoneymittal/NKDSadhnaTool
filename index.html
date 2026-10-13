@@ -2,8 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" content="#1f2b47" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="NKD Sadhna" />
     <title>Sadhna App</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="icons/icon-192.png"
+    />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="StylesheetCommon.css" />
     <link rel="stylesheet" href="StylesTable.css" />
 
@@ -18,6 +44,20 @@
 
   <body>
     <div class="container">
+      <header class="app-header">
+        <div class="app-header__inner">
+          <div class="brand">
+            <span class="brand__logo" aria-hidden="true">
+              <img src="images/logo_transparent.svg" alt="" />
+            </span>
+            <span class="brand__text">
+              <span class="brand__name">NKD Sadhna</span>
+              <span class="brand__tag">Where bhakti meets life!</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
       <div id="loadingSpinner" style="display: none">
         <div class="typing"><span></span><span></span><span></span></div>
       </div>
@@ -82,79 +122,729 @@
         </div>
 
         <div class="popup" id="mainContainer">
-          <div class="popup-content scrollable-content">
-            <div class="calendar-container" id="testing">
-              <iframe
-                id="tesingFrame"
-                class="calendar-iframe"
-                src="https://calendar.google.com/calendar/embed?src=5tvimg0va743vaecakfbaqario@group.calendar.google.com&src=unsrlf4f9d7gncjlekv875uu2g@group.calendar.google.com&src=ec8a98e4759a2165bfbb1832292ad6acc7070acfe5d64f4561da0913b690c175@group.calendar.google.com&ctz=Asia/Kolkata&mode=AGENDA"
-                title="NKD Calendar"
+          <div class="header-actions">
+            <button
+              class="header-btn header-btn--ghost"
+              id="initialRegistration"
+              onclick="OpenInitialRegistration()"
+              aria-label="New Registration"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
               >
-              </iframe>
-            </div>
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <path d="M20 8v6M23 11h-6" />
+              </svg>
+              <span>New Registration</span>
+            </button>
+            <button
+              class="header-btn header-btn--primary"
+              id="initialLoginLogout"
+              onclick="OpenInitialLoginWindow()"
+            >
+              Login
+            </button>
+          </div>
 
-            <div class="flex">
-              <div
-                class="user-info-block"
-                id="login-user-name-div_fp"
-                style="display: none"
-              >
-                <p id="login-user-name-lbl_fp"></p>
-              </div>
-
-              <div class="button-row">
-                <button
-                  class="purple_reg"
-                  id="initialRegistration"
-                  onclick="OpenInitialRegistration()"
+          <div class="popup-content scrollable-content home">
+            <section class="home-hero">
+              <div class="home-hero__text">
+                <p class="home-hero__eyebrow">Hare Krishna</p>
+                <h1 class="home-hero__title">
+                  Your daily sadhna, in one place
+                </h1>
+                <p class="home-hero__sub">
+                  Chant, read and hear every day, and watch your sadhna grow.
+                </p>
+                <div
+                  class="user-info-block"
+                  id="login-user-name-div_fp"
+                  style="display: none"
                 >
-                  <img
-                    src="https://www.svgrepo.com/show/255953/user-edit.svg"
-                    alt="New Registration"
-                    class="purple_reg_icon"
-                    style="width: 20px; height: 20px; margin-right: 8px"
+                  <p id="login-user-name-lbl_fp"></p>
+                </div>
+                <div class="home-hero__cta">
+                  <button class="cta cta--primary" onclick="openJapaWindow()">
+                    Start Japa
+                    <span class="cta__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+                  <button
+                    class="cta cta--ghost"
+                    onclick="showSAPasswordPopup()"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 20V10M12 20V4M6 20v-6" />
+                    </svg>
+                    Sadhna Analysis
+                  </button>
+                </div>
+                <ul class="home-hero__chips">
+                  <li>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 6v6l4 2" />
+                    </svg>
+                    Round timer
+                  </li>
+                  <li>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M3 3v18h18" />
+                      <path d="m7 15 4-4 3 3 5-6" />
+                    </svg>
+                    Monthly reports
+                  </li>
+                  <li>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
+                      />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    Hearing attendance
+                  </li>
+                </ul>
+              </div>
+              <div class="home-hero__mantra" aria-hidden="true">
+                <svg class="mala" viewBox="0 0 200 218">
+                  <defs>
+                    <radialGradient id="malaBead" cx="35%" cy="30%" r="70%">
+                      <stop offset="0" stop-color="#fff4c2" />
+                      <stop offset="0.45" stop-color="#f2c14e" />
+                      <stop offset="1" stop-color="#9a6a12" />
+                    </radialGradient>
+                    <radialGradient id="malaHalo" cx="50%" cy="50%" r="50%">
+                      <stop
+                        offset="0"
+                        stop-color="#f7c63b"
+                        stop-opacity="0.32"
+                      />
+                      <stop
+                        offset="0.6"
+                        stop-color="#f7c63b"
+                        stop-opacity="0.08"
+                      />
+                      <stop offset="1" stop-color="#f7c63b" stop-opacity="0" />
+                    </radialGradient>
+                  </defs>
+                  <circle
+                    class="mala__halo"
+                    cx="100"
+                    cy="100"
+                    r="96"
+                    fill="url(#malaHalo)"
                   />
-                  <span>New Registration</span>
-                </button>
-                <button
-                  class="purple"
-                  id="initialLoginLogout"
-                  onclick="OpenInitialLoginWindow()"
-                >
-                  Login
-                </button>
+                  <circle
+                    class="mala__inner"
+                    cx="100"
+                    cy="100"
+                    r="72"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.22)"
+                    stroke-width="0.8"
+                    stroke-dasharray="2 5"
+                  />
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="88"
+                    fill="none"
+                    stroke="rgba(247,198,59,0.35)"
+                    stroke-width="0.6"
+                  />
+                  <g class="mala__beads" fill="url(#malaBead)">
+                    <circle cx="100.00" cy="188.00" r="3.6" />
+                    <circle cx="89.78" cy="187.40" r="3.6" />
+                    <circle cx="79.71" cy="185.63" r="3.6" />
+                    <circle cx="69.90" cy="182.69" r="3.6" />
+                    <circle cx="60.51" cy="178.64" r="3.6" />
+                    <circle cx="51.64" cy="173.52" r="3.6" />
+                    <circle cx="43.43" cy="167.41" r="3.6" />
+                    <circle cx="35.99" cy="160.39" r="3.6" />
+                    <circle cx="29.41" cy="152.55" r="3.6" />
+                    <circle cx="23.79" cy="144.00" r="3.6" />
+                    <circle cx="19.20" cy="134.86" r="3.6" />
+                    <circle cx="15.70" cy="125.24" r="3.6" />
+                    <circle cx="13.34" cy="115.28" r="3.6" />
+                    <circle cx="12.15" cy="105.12" r="3.6" />
+                    <circle cx="12.15" cy="94.88" r="3.6" />
+                    <circle cx="13.34" cy="84.72" r="3.6" />
+                    <circle cx="15.70" cy="74.76" r="3.6" />
+                    <circle cx="19.20" cy="65.14" r="3.6" />
+                    <circle cx="23.79" cy="56.00" r="3.6" />
+                    <circle cx="29.41" cy="47.45" r="3.6" />
+                    <circle cx="35.99" cy="39.61" r="3.6" />
+                    <circle cx="43.43" cy="32.59" r="3.6" />
+                    <circle cx="51.64" cy="26.48" r="3.6" />
+                    <circle cx="60.51" cy="21.36" r="3.6" />
+                    <circle cx="69.90" cy="17.31" r="3.6" />
+                    <circle cx="79.71" cy="14.37" r="3.6" />
+                    <circle cx="89.78" cy="12.60" r="3.6" />
+                    <circle
+                      class="mala__bead--lit"
+                      cx="100.00"
+                      cy="12.00"
+                      r="3.6"
+                    />
+                    <circle cx="110.22" cy="12.60" r="3.6" />
+                    <circle cx="120.29" cy="14.37" r="3.6" />
+                    <circle cx="130.10" cy="17.31" r="3.6" />
+                    <circle cx="139.49" cy="21.36" r="3.6" />
+                    <circle cx="148.36" cy="26.48" r="3.6" />
+                    <circle cx="156.57" cy="32.59" r="3.6" />
+                    <circle cx="164.01" cy="39.61" r="3.6" />
+                    <circle cx="170.59" cy="47.45" r="3.6" />
+                    <circle cx="176.21" cy="56.00" r="3.6" />
+                    <circle cx="180.80" cy="65.14" r="3.6" />
+                    <circle cx="184.30" cy="74.76" r="3.6" />
+                    <circle cx="186.66" cy="84.72" r="3.6" />
+                    <circle cx="187.85" cy="94.88" r="3.6" />
+                    <circle cx="187.85" cy="105.12" r="3.6" />
+                    <circle cx="186.66" cy="115.28" r="3.6" />
+                    <circle cx="184.30" cy="125.24" r="3.6" />
+                    <circle cx="180.80" cy="134.86" r="3.6" />
+                    <circle cx="176.21" cy="144.00" r="3.6" />
+                    <circle cx="170.59" cy="152.55" r="3.6" />
+                    <circle cx="164.01" cy="160.39" r="3.6" />
+                    <circle cx="156.57" cy="167.41" r="3.6" />
+                    <circle cx="148.36" cy="173.52" r="3.6" />
+                    <circle cx="139.49" cy="178.64" r="3.6" />
+                    <circle cx="130.10" cy="182.69" r="3.6" />
+                    <circle cx="120.29" cy="185.63" r="3.6" />
+                    <circle cx="110.22" cy="187.40" r="3.6" />
+                  </g>
+                  <g class="mala__sumeru">
+                    <path
+                      d="M100 196v6M100 202l-5 14M100 202l-1.8 15M100 202l1.8 15M100 202l5 14"
+                      stroke="#f2c14e"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="100" cy="202" r="2.4" fill="#d9982e" />
+                    <circle cx="100" cy="188" r="7" fill="url(#malaBead)" />
+                  </g>
+                </svg>
+                <div class="mantra-core">
+                  <span class="mantra-core__label">॥ महामंत्र ॥</span>
+                  <p class="mantra-core__lines">
+                    हरे कृष्ण हरे कृष्ण<br />
+                    कृष्ण कृष्ण हरे हरे<br />
+                    हरे राम हरे राम<br />
+                    राम राम हरे हरे
+                  </p>
+                </div>
               </div>
-              <button class="green" onclick="openJapaWindow()">Japa</button>
-              <button class="green" onclick="openReadingWindow()">
-                Reading
-              </button>
-              <button class="green" onclick="openHearingWindow()">
-                Hearing
-              </button>
+            </section>
 
-              <button
-                class="youtube-btn"
-                onclick="
-                  window.location.href = 'https://youtube.nkdcommunity.in/'
-                "
-              >
-                <img
-                  src="https://www.svgrepo.com/show/13671/youtube.svg"
-                  alt="YouTube"
-                  class="yt-icon"
-                />
-                <span>NKD YouTube</span>
-              </button>
+            <div class="home-grid">
+              <div class="home-main">
+                <div class="section-head section-head--daily">
+                  <div class="section-head__row">
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <h2 class="home-section-title">Daily Sadhna</h2>
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <p class="section-head__sub">आज की साधना</p>
+                </div>
+                <div class="tile-grid tile-grid--primary">
+                  <button
+                    class="tile tile--primary tile--japa"
+                    onclick="openJapaWindow()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      >
+                        <circle
+                          cx="12"
+                          cy="11"
+                          r="7.5"
+                          stroke-width="3"
+                          stroke-dasharray="0.01 4.7024"
+                          transform="rotate(18 12 11)"
+                        />
+                        <path d="M12 19.5V22.5" stroke-width="2" />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Japa</span>
+                      <span class="tile__desc">Chant with the round timer</span>
+                    </span>
+                    <span class="tile__go">
+                      Open
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
 
-              <button class="green" onclick="openOtherLinkWindow()">MCQ</button>
-              <button class="blue" onclick="openGlorificationPanel()">
-                Glorifications
-              </button>
-              <button class="blue" onclick="showSAPasswordPopup()">
-                Sadhna Analysis
-              </button>
-              <button class="blue" onclick="asdflasdf()">🔐 Admin Panel</button>
+                  <button
+                    class="tile tile--primary tile--reading"
+                    onclick="openReadingWindow()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Reading</span>
+                      <span class="tile__desc">Log your reading and notes</span>
+                    </span>
+                    <span class="tile__go">
+                      Open
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  <button
+                    class="tile tile--primary tile--hearing"
+                    onclick="openHearingWindow()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                        <path
+                          d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Hearing</span>
+                      <span class="tile__desc">Note the lectures you hear</span>
+                    </span>
+                    <span class="tile__go">
+                      Open
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+
+                <div class="section-head section-head--explore">
+                  <div class="section-head__row">
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <h2 class="home-section-title">Explore</h2>
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <p class="section-head__sub">और भी जानें</p>
+                </div>
+                <div class="tile-grid tile-grid--secondary">
+                  <button
+                    class="tile tile--youtube"
+                    onclick="
+                      window.location.href = 'https://youtube.nkdcommunity.in/'
+                    "
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"
+                        />
+                        <path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54z" />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">NKD YouTube</span>
+                      <span class="tile__desc">Lectures and kirtans</span>
+                    </span>
+                    <svg
+                      class="tile__chev"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+
+                  <button
+                    class="tile tile--mcq"
+                    onclick="openOtherLinkWindow()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 11 3 3L22 4" />
+                        <path
+                          d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+                        />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">MCQ</span>
+                      <span class="tile__desc">Tests and your results</span>
+                    </span>
+                    <svg
+                      class="tile__chev"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+
+                  <button
+                    class="tile tile--glory"
+                    onclick="openGlorificationPanel()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Glorifications</span>
+                      <span class="tile__desc">Glorify the devotees</span>
+                    </span>
+                    <svg
+                      class="tile__chev"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+
+                  <button
+                    class="tile tile--analysis"
+                    onclick="showSAPasswordPopup()"
+                  >
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M18 20V10M12 20V4M6 20v-6" />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Sadhna Analysis</span>
+                      <span class="tile__desc">Your monthly sadhna report</span>
+                    </span>
+                    <svg
+                      class="tile__chev"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+
+                  <button class="tile tile--admin" onclick="asdflasdf()">
+                    <span class="tile__icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect x="3" y="11" width="18" height="11" rx="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                    </span>
+                    <span class="tile__body">
+                      <span class="tile__title">Admin Panel</span>
+                      <span class="tile__desc">For NKD servants</span>
+                    </span>
+                    <svg
+                      class="tile__chev"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <aside class="home-side">
+                <div class="section-head section-head--events">
+                  <div class="section-head__row">
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <h2 class="home-section-title">Upcoming Events</h2>
+                    <svg
+                      class="section-head__orn"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 3c1.8 2 2.7 4.2 2.7 6.4 0 2.3-1 4.3-2.7 5.6-1.7-1.3-2.7-3.3-2.7-5.6C9.3 7.2 10.2 5 12 3Z"
+                      />
+                      <path
+                        opacity=".65"
+                        d="M3 10c2.6-.2 4.8.6 6.4 2.2 1.1 1.1 1.8 2.5 2 4C8.6 16.4 6.1 15.6 4.5 14 3.6 13 3 11.7 3 10Zm18 0c-2.6-.2-4.8.6-6.4 2.2-1.1 1.1-1.8 2.5-2 4 2.8.2 5.3-.6 6.9-2.2.9-1 1.5-2.3 1.5-4Z"
+                      />
+                      <path
+                        d="M5 19h14"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <p class="section-head__sub">आने वाले उत्सव</p>
+                </div>
+                <div class="calendar-container" id="testing">
+                  <iframe
+                    id="tesingFrame"
+                    class="calendar-iframe"
+                    src="https://calendar.google.com/calendar/embed?src=5tvimg0va743vaecakfbaqario@group.calendar.google.com&src=unsrlf4f9d7gncjlekv875uu2g@group.calendar.google.com&src=ec8a98e4759a2165bfbb1832292ad6acc7070acfe5d64f4561da0913b690c175@group.calendar.google.com&ctz=Asia/Kolkata&mode=AGENDA"
+                    title="NKD Calendar"
+                  >
+                  </iframe>
+                </div>
+              </aside>
             </div>
+
+            <footer class="home-footer">
+              Powered by
+              <a href="https://www.youtube.com/@Nityakrishnadas" target="_blank"
+                >NKD Community</a
+              >
+            </footer>
           </div>
         </div>
 
@@ -275,7 +965,7 @@
           </div>
         </div>
 
-        <div class="popup" id="initailPasswordPopup">
+        <div class="popup popup--modal" id="initailPasswordPopup">
           <div class="popup-content scrollable-content">
             <div class="contact-info">
               <p>
@@ -319,7 +1009,7 @@
           </div>
         </div>
 
-        <div class="popup" id="saPasswordPopup">
+        <div class="popup popup--modal" id="saPasswordPopup">
           <div class="popup-content scrollable-content">
             <h2>Enter Your Password</h2>
             <input
@@ -383,104 +1073,457 @@
         id="japaContainer"
         style="display: none"
       >
-        <div class="video-container" id="videoContainer">
-          <iframe
-            loading="lazy"
-            src="https://www.youtube.com/embed/39ScgiYDeWY"
-            title="YouTube video player"
-            allow="
-              accelerometer;
-              autoplay;
-              clipboard-write;
-              encrypted-media;
-              gyroscope;
-              picture-in-picture;
-            "
-            allowfullscreen
-          >
-          </iframe>
-        </div>
-        <div
-          class="user-info-block"
-          id="login-user-name-div"
-          style="display: none"
-        >
-          <p id="login-user-name-lbl"></p>
-        </div>
-        <div id="japaTimeMessage" class="japa-time-message">
-          Focus your mind. Chant with devotion between 6:00 and 7:30 minutes to
-          get green japa.
-        </div>
-
-        <div class="contact-info">
-          <div>
-            <p id="display-text"></p>
-          </div>
-        </div>
-
-        <div class="avg_info" id="sdBlock" style="display: none"></div>
-
-        <div class="mantra-block" id="mantraBlock">
-          <button
-            id="toggleMantraBtn"
-            class="mantra-toggle-btn"
-            onclick="showManualJapaWindow()"
-          >
-            Manual Japa
-          </button>
-          <div class="mantra-text" id="mantraText">
-            हरे कृष्ण हरे कृष्ण |<br />
-            कृष्ण कृष्ण हरे हरे ||<br />
-            हरे राम हरे राम |<br />
-            राम राम हरे हरे ||
-          </div>
-          <div class="manual-counter" id="manualCounter">
-            <!-- <div class="counter-display" id="counterDisplay">0 / 108</div> -->
+        <div class="japa-layout">
+          <div class="japa-col japa-col--info">
+            <div class="video-container" id="videoContainer">
+              <iframe
+                loading="lazy"
+                src="https://www.youtube.com/embed/39ScgiYDeWY"
+                title="YouTube video player"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
+                allowfullscreen
+              >
+              </iframe>
+            </div>
             <div
-              class="count-circle"
-              id="countCircle"
-              onclick="incrementCount()"
+              class="user-info-block"
+              id="login-user-name-div"
+              style="display: none"
             >
-              0 / 108
+              <p id="login-user-name-lbl"></p>
+            </div>
+            <div id="japaTimeMessage" class="japa-time-message">
+              Focus your mind. Chant with devotion between 6:00 and 7:30 minutes
+              to get green japa.
+            </div>
+
+            <div class="contact-info">
+              <div>
+                <p id="display-text"></p>
+              </div>
+            </div>
+
+            <div class="avg_info" id="sdBlock" style="display: none"></div>
+          </div>
+
+          <div class="japa-col japa-col--main">
+            <div class="mantra-block" id="mantraBlock">
+              <button
+                id="toggleMantraBtn"
+                class="mantra-toggle-btn"
+                onclick="showManualJapaWindow()"
+              >
+                Manual Japa
+              </button>
+              <div class="mantra-mala" id="mantraText">
+                <div class="mantra-mala__stage">
+                  <svg class="mala" viewBox="0 0 200 218">
+                    <defs>
+                      <radialGradient
+                        id="japaMalaBead"
+                        cx="35%"
+                        cy="30%"
+                        r="70%"
+                      >
+                        <stop offset="0" stop-color="#fff4c2" />
+                        <stop offset="0.45" stop-color="#f2c14e" />
+                        <stop offset="1" stop-color="#9a6a12" />
+                      </radialGradient>
+                      <radialGradient
+                        id="japaMalaHalo"
+                        cx="50%"
+                        cy="50%"
+                        r="50%"
+                      >
+                        <stop
+                          offset="0"
+                          stop-color="#f7c63b"
+                          stop-opacity="0.32"
+                        />
+                        <stop
+                          offset="0.6"
+                          stop-color="#f7c63b"
+                          stop-opacity="0.08"
+                        />
+                        <stop
+                          offset="1"
+                          stop-color="#f7c63b"
+                          stop-opacity="0"
+                        />
+                      </radialGradient>
+                    </defs>
+                    <circle
+                      class="mala__halo"
+                      cx="100"
+                      cy="100"
+                      r="96"
+                      fill="url(#japaMalaHalo)"
+                    />
+                    <circle
+                      class="mala__inner"
+                      cx="100"
+                      cy="100"
+                      r="72"
+                      fill="none"
+                      stroke="rgba(255,255,255,0.22)"
+                      stroke-width="0.8"
+                      stroke-dasharray="2 5"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="88"
+                      fill="none"
+                      stroke="rgba(247,198,59,0.35)"
+                      stroke-width="0.6"
+                    />
+                    <g class="mala__beads" fill="url(#japaMalaBead)">
+                      <circle cx="100.00" cy="188.00" r="3.6" />
+                      <circle cx="89.78" cy="187.40" r="3.6" />
+                      <circle cx="79.71" cy="185.63" r="3.6" />
+                      <circle cx="69.90" cy="182.69" r="3.6" />
+                      <circle cx="60.51" cy="178.64" r="3.6" />
+                      <circle cx="51.64" cy="173.52" r="3.6" />
+                      <circle cx="43.43" cy="167.41" r="3.6" />
+                      <circle cx="35.99" cy="160.39" r="3.6" />
+                      <circle cx="29.41" cy="152.55" r="3.6" />
+                      <circle cx="23.79" cy="144.00" r="3.6" />
+                      <circle cx="19.20" cy="134.86" r="3.6" />
+                      <circle cx="15.70" cy="125.24" r="3.6" />
+                      <circle cx="13.34" cy="115.28" r="3.6" />
+                      <circle cx="12.15" cy="105.12" r="3.6" />
+                      <circle cx="12.15" cy="94.88" r="3.6" />
+                      <circle cx="13.34" cy="84.72" r="3.6" />
+                      <circle cx="15.70" cy="74.76" r="3.6" />
+                      <circle cx="19.20" cy="65.14" r="3.6" />
+                      <circle cx="23.79" cy="56.00" r="3.6" />
+                      <circle cx="29.41" cy="47.45" r="3.6" />
+                      <circle cx="35.99" cy="39.61" r="3.6" />
+                      <circle cx="43.43" cy="32.59" r="3.6" />
+                      <circle cx="51.64" cy="26.48" r="3.6" />
+                      <circle cx="60.51" cy="21.36" r="3.6" />
+                      <circle cx="69.90" cy="17.31" r="3.6" />
+                      <circle cx="79.71" cy="14.37" r="3.6" />
+                      <circle cx="89.78" cy="12.60" r="3.6" />
+                      <circle
+                        class="mala__bead--lit"
+                        cx="100.00"
+                        cy="12.00"
+                        r="3.6"
+                      />
+                      <circle cx="110.22" cy="12.60" r="3.6" />
+                      <circle cx="120.29" cy="14.37" r="3.6" />
+                      <circle cx="130.10" cy="17.31" r="3.6" />
+                      <circle cx="139.49" cy="21.36" r="3.6" />
+                      <circle cx="148.36" cy="26.48" r="3.6" />
+                      <circle cx="156.57" cy="32.59" r="3.6" />
+                      <circle cx="164.01" cy="39.61" r="3.6" />
+                      <circle cx="170.59" cy="47.45" r="3.6" />
+                      <circle cx="176.21" cy="56.00" r="3.6" />
+                      <circle cx="180.80" cy="65.14" r="3.6" />
+                      <circle cx="184.30" cy="74.76" r="3.6" />
+                      <circle cx="186.66" cy="84.72" r="3.6" />
+                      <circle cx="187.85" cy="94.88" r="3.6" />
+                      <circle cx="187.85" cy="105.12" r="3.6" />
+                      <circle cx="186.66" cy="115.28" r="3.6" />
+                      <circle cx="184.30" cy="125.24" r="3.6" />
+                      <circle cx="180.80" cy="134.86" r="3.6" />
+                      <circle cx="176.21" cy="144.00" r="3.6" />
+                      <circle cx="170.59" cy="152.55" r="3.6" />
+                      <circle cx="164.01" cy="160.39" r="3.6" />
+                      <circle cx="156.57" cy="167.41" r="3.6" />
+                      <circle cx="148.36" cy="173.52" r="3.6" />
+                      <circle cx="139.49" cy="178.64" r="3.6" />
+                      <circle cx="130.10" cy="182.69" r="3.6" />
+                      <circle cx="120.29" cy="185.63" r="3.6" />
+                      <circle cx="110.22" cy="187.40" r="3.6" />
+                    </g>
+                    <g class="mala__sumeru">
+                      <path
+                        d="M100 196v6M100 202l-5 14M100 202l-1.8 15M100 202l1.8 15M100 202l5 14"
+                        stroke="#f2c14e"
+                        stroke-width="1.4"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="100" cy="202" r="2.4" fill="#d9982e" />
+                      <circle
+                        cx="100"
+                        cy="188"
+                        r="7"
+                        fill="url(#japaMalaBead)"
+                      />
+                    </g>
+                  </svg>
+                  <div class="mantra-core">
+                    <span class="mantra-core__label">॥ महामंत्र ॥</span>
+                    <div class="mantra-text mantra-core__lines">
+                      हरे कृष्ण हरे कृष्ण<br />
+                      कृष्ण कृष्ण हरे हरे<br />
+                      हरे राम हरे राम<br />
+                      राम राम हरे हरे
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="manual-counter" id="manualCounter">
+                <div class="manual-mala" id="manualMala">
+                  <svg
+                    class="manual-mala__svg"
+                    viewBox="0 0 220 244"
+                    aria-hidden="true"
+                  >
+                    <defs>
+                      <radialGradient id="mmBeadGold" cx="35%" cy="30%" r="70%">
+                        <stop offset="0" stop-color="#fff4c2" />
+                        <stop offset="0.45" stop-color="#f2c14e" />
+                        <stop offset="1" stop-color="#9a6a12" />
+                      </radialGradient>
+                      <radialGradient id="mmHalo" cx="50%" cy="50%" r="50%">
+                        <stop
+                          offset="0"
+                          stop-color="#f7c63b"
+                          stop-opacity="0.3"
+                        />
+                        <stop
+                          offset="0.65"
+                          stop-color="#f7c63b"
+                          stop-opacity="0.06"
+                        />
+                        <stop
+                          offset="1"
+                          stop-color="#f7c63b"
+                          stop-opacity="0"
+                        />
+                      </radialGradient>
+                    </defs>
+                    <circle
+                      class="manual-mala__halo"
+                      cx="110"
+                      cy="110"
+                      r="104"
+                      fill="url(#mmHalo)"
+                    />
+                    <circle
+                      cx="110"
+                      cy="110"
+                      r="96"
+                      fill="none"
+                      stroke="rgba(247,198,59,0.3)"
+                      stroke-width="0.6"
+                    />
+                    <g class="manual-mala__beads" id="manualMalaBeads">
+                      <circle
+                        class="is-current"
+                        cx="110.00"
+                        cy="14.00"
+                        r="2.6"
+                      />
+                      <circle cx="115.58" cy="14.16" r="2.6" />
+                      <circle cx="121.14" cy="14.65" r="2.6" />
+                      <circle cx="126.67" cy="15.46" r="2.6" />
+                      <circle cx="132.14" cy="16.59" r="2.6" />
+                      <circle cx="137.53" cy="18.03" r="2.6" />
+                      <circle cx="142.83" cy="19.79" r="2.6" />
+                      <circle cx="148.02" cy="21.85" r="2.6" />
+                      <circle cx="153.08" cy="24.21" r="2.6" />
+                      <circle cx="158.00" cy="26.86" r="2.6" />
+                      <circle cx="162.75" cy="29.79" r="2.6" />
+                      <circle cx="167.33" cy="33.00" r="2.6" />
+                      <circle cx="171.71" cy="36.46" r="2.6" />
+                      <circle cx="175.88" cy="40.17" r="2.6" />
+                      <circle cx="179.83" cy="44.12" r="2.6" />
+                      <circle cx="183.54" cy="48.29" r="2.6" />
+                      <circle cx="187.00" cy="52.67" r="2.6" />
+                      <circle cx="190.21" cy="57.25" r="2.6" />
+                      <circle cx="193.14" cy="62.00" r="2.6" />
+                      <circle cx="195.79" cy="66.92" r="2.6" />
+                      <circle cx="198.15" cy="71.98" r="2.6" />
+                      <circle cx="200.21" cy="77.17" r="2.6" />
+                      <circle cx="201.97" cy="82.47" r="2.6" />
+                      <circle cx="203.41" cy="87.86" r="2.6" />
+                      <circle cx="204.54" cy="93.33" r="2.6" />
+                      <circle cx="205.35" cy="98.86" r="2.6" />
+                      <circle cx="205.84" cy="104.42" r="2.6" />
+                      <circle cx="206.00" cy="110.00" r="2.6" />
+                      <circle cx="205.84" cy="115.58" r="2.6" />
+                      <circle cx="205.35" cy="121.14" r="2.6" />
+                      <circle cx="204.54" cy="126.67" r="2.6" />
+                      <circle cx="203.41" cy="132.14" r="2.6" />
+                      <circle cx="201.97" cy="137.53" r="2.6" />
+                      <circle cx="200.21" cy="142.83" r="2.6" />
+                      <circle cx="198.15" cy="148.02" r="2.6" />
+                      <circle cx="195.79" cy="153.08" r="2.6" />
+                      <circle cx="193.14" cy="158.00" r="2.6" />
+                      <circle cx="190.21" cy="162.75" r="2.6" />
+                      <circle cx="187.00" cy="167.33" r="2.6" />
+                      <circle cx="183.54" cy="171.71" r="2.6" />
+                      <circle cx="179.83" cy="175.88" r="2.6" />
+                      <circle cx="175.88" cy="179.83" r="2.6" />
+                      <circle cx="171.71" cy="183.54" r="2.6" />
+                      <circle cx="167.33" cy="187.00" r="2.6" />
+                      <circle cx="162.75" cy="190.21" r="2.6" />
+                      <circle cx="158.00" cy="193.14" r="2.6" />
+                      <circle cx="153.08" cy="195.79" r="2.6" />
+                      <circle cx="148.02" cy="198.15" r="2.6" />
+                      <circle cx="142.83" cy="200.21" r="2.6" />
+                      <circle cx="137.53" cy="201.97" r="2.6" />
+                      <circle cx="132.14" cy="203.41" r="2.6" />
+                      <circle cx="126.67" cy="204.54" r="2.6" />
+                      <circle cx="121.14" cy="205.35" r="2.6" />
+                      <circle cx="115.58" cy="205.84" r="2.6" />
+                      <circle cx="110.00" cy="206.00" r="2.6" />
+                      <circle cx="104.42" cy="205.84" r="2.6" />
+                      <circle cx="98.86" cy="205.35" r="2.6" />
+                      <circle cx="93.33" cy="204.54" r="2.6" />
+                      <circle cx="87.86" cy="203.41" r="2.6" />
+                      <circle cx="82.47" cy="201.97" r="2.6" />
+                      <circle cx="77.17" cy="200.21" r="2.6" />
+                      <circle cx="71.98" cy="198.15" r="2.6" />
+                      <circle cx="66.92" cy="195.79" r="2.6" />
+                      <circle cx="62.00" cy="193.14" r="2.6" />
+                      <circle cx="57.25" cy="190.21" r="2.6" />
+                      <circle cx="52.67" cy="187.00" r="2.6" />
+                      <circle cx="48.29" cy="183.54" r="2.6" />
+                      <circle cx="44.12" cy="179.83" r="2.6" />
+                      <circle cx="40.17" cy="175.88" r="2.6" />
+                      <circle cx="36.46" cy="171.71" r="2.6" />
+                      <circle cx="33.00" cy="167.33" r="2.6" />
+                      <circle cx="29.79" cy="162.75" r="2.6" />
+                      <circle cx="26.86" cy="158.00" r="2.6" />
+                      <circle cx="24.21" cy="153.08" r="2.6" />
+                      <circle cx="21.85" cy="148.02" r="2.6" />
+                      <circle cx="19.79" cy="142.83" r="2.6" />
+                      <circle cx="18.03" cy="137.53" r="2.6" />
+                      <circle cx="16.59" cy="132.14" r="2.6" />
+                      <circle cx="15.46" cy="126.67" r="2.6" />
+                      <circle cx="14.65" cy="121.14" r="2.6" />
+                      <circle cx="14.16" cy="115.58" r="2.6" />
+                      <circle cx="14.00" cy="110.00" r="2.6" />
+                      <circle cx="14.16" cy="104.42" r="2.6" />
+                      <circle cx="14.65" cy="98.86" r="2.6" />
+                      <circle cx="15.46" cy="93.33" r="2.6" />
+                      <circle cx="16.59" cy="87.86" r="2.6" />
+                      <circle cx="18.03" cy="82.47" r="2.6" />
+                      <circle cx="19.79" cy="77.17" r="2.6" />
+                      <circle cx="21.85" cy="71.98" r="2.6" />
+                      <circle cx="24.21" cy="66.92" r="2.6" />
+                      <circle cx="26.86" cy="62.00" r="2.6" />
+                      <circle cx="29.79" cy="57.25" r="2.6" />
+                      <circle cx="33.00" cy="52.67" r="2.6" />
+                      <circle cx="36.46" cy="48.29" r="2.6" />
+                      <circle cx="40.17" cy="44.12" r="2.6" />
+                      <circle cx="44.12" cy="40.17" r="2.6" />
+                      <circle cx="48.29" cy="36.46" r="2.6" />
+                      <circle cx="52.67" cy="33.00" r="2.6" />
+                      <circle cx="57.25" cy="29.79" r="2.6" />
+                      <circle cx="62.00" cy="26.86" r="2.6" />
+                      <circle cx="66.92" cy="24.21" r="2.6" />
+                      <circle cx="71.98" cy="21.85" r="2.6" />
+                      <circle cx="77.17" cy="19.79" r="2.6" />
+                      <circle cx="82.47" cy="18.03" r="2.6" />
+                      <circle cx="87.86" cy="16.59" r="2.6" />
+                      <circle cx="93.33" cy="15.46" r="2.6" />
+                      <circle cx="98.86" cy="14.65" r="2.6" />
+                      <circle cx="104.42" cy="14.16" r="2.6" />
+                    </g>
+                    <path class="manual-mala__pointer" d="M104 2h12l-6 7z" />
+                    <g class="manual-mala__sumeru">
+                      <path
+                        d="M110 214v6M110 220l-5 16M110 220l-1.8 17M110 220l1.8 17M110 220l5 16"
+                        stroke="#f2c14e"
+                        stroke-width="1.4"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="110" cy="220" r="2.4" fill="#d9982e" />
+                      <circle
+                        cx="110"
+                        cy="206"
+                        r="7.5"
+                        fill="url(#mmBeadGold)"
+                      />
+                    </g>
+                  </svg>
+                  <div class="manual-mala__center" aria-hidden="true">
+                    <span class="manual-mala__label">॥ जप ॥</span>
+                    <span class="manual-mala__num" id="manualMalaNum">0</span>
+                    <span class="manual-mala__of">of 108</span>
+                  </div>
+                  <!-- incrementCount() writes "n / 108" here; it is the tap layer over the mala -->
+                  <div
+                    class="count-circle"
+                    id="countCircle"
+                    onclick="incrementCount()"
+                  >
+                    0 / 108
+                  </div>
+                </div>
+                <button class="manual-mala__cta" onclick="incrementCount()">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8"
+                    />
+                    <path
+                      d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"
+                    />
+                  </svg>
+                  Tap to Chant
+                  <span class="manual-mala__cta-hi">जप करें</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="timer running" id="timer" style="display: none">
+              00:00:00:00
+            </div>
+
+            <!-- Buttons for Start, Next, Reset, End -->
+            <div class="data-input-buttons data-input-buttons-margin-override">
+              <button
+                class="start"
+                id="startPauseButton"
+                onclick="handleStartPause()"
+              >
+                Start
+              </button>
+              <button
+                class="lap"
+                style="display: none"
+                id="lapButton"
+                onclick="pauseAndShowPopup()"
+              >
+                Next
+              </button>
+            </div>
+            <!-- Laps and Buttons -->
+            <div class="laps" id="laps"></div>
+            <div class="data-save-buttons">
+              <button class="reset" onclick="openConfirmPopup()">Reset</button>
+              <button class="stop" onclick="stopTimer()">End</button>
+              <button class="blue" onclick="openPasswordReportPopup()">
+                Analysis
+              </button>
+            </div>
+            <div class="data-save-buttons">
+              <button class="start" onclick="backToMainScreen('japaContainer')">
+                Back To Main Screen
+              </button>
             </div>
           </div>
-        </div>
-
-        <div class="timer running" id="timer" style="display: none">
-          00:00:00:00
-        </div>
-
-        <!-- Buttons for Start, Next, Reset, End -->
-        <div class="data-input-buttons data-input-buttons-margin-override">
-          <button
-            class="start"
-            id="startPauseButton"
-            onclick="handleStartPause()"
-          >
-            Start
-          </button>
-          <button
-            class="lap"
-            style="display: none"
-            id="lapButton"
-            onclick="pauseAndShowPopup()"
-          >
-            Next
-          </button>
-        </div>
-        <!-- Laps and Buttons -->
-        <div class="laps" id="laps"></div>
-        <div class="data-save-buttons">
-          <button class="reset" onclick="openConfirmPopup()">Reset</button>
-          <button class="stop" onclick="stopTimer()">End</button>
-          <button class="blue" onclick="openPasswordReportPopup()">
-            Analysis
-          </button>
-        </div>
-        <div class="data-save-buttons" style="margin: 0px">
-          <button class="start" onclick="backToMainScreen('japaContainer')">
-            Back To Main Screen
-          </button>
         </div>
 
         <div class="created-by">
@@ -544,7 +1587,7 @@
           </div>
         </div>
       </div>
-      <div class="popup" id="passwordPopup">
+      <div class="popup popup--modal" id="passwordPopup">
         <div class="popup-content scrollable-content">
           <div class="contact-info">
             <p>
@@ -582,7 +1625,7 @@
         </div>
       </div>
 
-      <div class="popup" id="otherJapaDetailPopup">
+      <div class="popup popup--modal" id="otherJapaDetailPopup">
         <div class="popup-content scrollable-content">
           <div class="select-container">
             <label for="sleepingTimeSelect" class="required"
@@ -722,7 +1765,7 @@
         </div>
       </div>
 
-      <div class="popup" id="passwordReportPopup">
+      <div class="popup popup--modal" id="passwordReportPopup">
         <div class="popup-content">
           <h2>Enter Your Password</h2>
           <div class="contact-info">
@@ -779,20 +1822,26 @@
             ></select>
           </div>
 
-          <div class="popup-content" style="margin-top: 10px">
-            <canvas id="japaDurationChart"></canvas>
-          </div>
+          <div class="chart-grid">
+            <div class="chart-card">
+              <canvas id="japaDurationChart"></canvas>
+            </div>
 
-          <div class="popup-content" style="margin-top: 10px">
-            <canvas id="japaMalaCountChart" width="400" height="200"></canvas>
-          </div>
+            <div class="chart-card">
+              <canvas id="japaMalaCountChart" width="400" height="200"></canvas>
+            </div>
 
-          <div class="popup-content" style="margin-top: 10px">
-            <canvas id="japaPieChart" width="400" height="400"></canvas>
-          </div>
+            <div class="chart-card">
+              <canvas id="japaPieChart" width="400" height="400"></canvas>
+            </div>
 
-          <div class="popup-content" style="margin-top: 10px">
-            <canvas id="japaLapTimePieChart" width="400" height="400"></canvas>
+            <div class="chart-card">
+              <canvas
+                id="japaLapTimePieChart"
+                width="400"
+                height="400"
+              ></canvas>
+            </div>
           </div>
 
           <div
@@ -960,7 +2009,7 @@
             </div>
           </div>
         </div>
-        <div class="popup" id="hearingContainerSuccessPopup">
+        <div class="popup popup--modal" id="hearingContainerSuccessPopup">
           <div class="popup-content">
             <h2 style="color: green">Your Hearing Notes saved successfully.</h2>
             <button class="green" onclick="closeHearingSuccessPopup()">
@@ -995,10 +2044,7 @@
             >
               Back
             </button>
-            <div
-              class="popup-content"
-              style="margin-top: 10px; margin-bottom: 10px"
-            >
+            <div class="chart-card chart-card--pie">
               <canvas id="hearingPieChart" width="400" height="400"></canvas>
             </div>
             <div id="hcCardView" class="card-view"></div>
@@ -1102,7 +2148,7 @@
             </button>
           </div>
         </div>
-        <div class="popup" id="readingContainerSuccessPopup">
+        <div class="popup popup--modal" id="readingContainerSuccessPopup">
           <div class="popup-content">
             <h2 style="color: green">Your Reading Notes saved successfully.</h2>
             <button class="green" onclick="closeReadingSuccessPopup()">
@@ -1139,10 +2185,7 @@
             >
               Back
             </button>
-            <div
-              class="popup-content"
-              style="margin-top: 10px; margin-bottom: 10px"
-            >
+            <div class="chart-card chart-card--pie">
               <canvas id="readingPieChart" width="400" height="400"></canvas>
             </div>
             <div id="rcCardView" class="card-view"></div>
@@ -1212,7 +2255,7 @@
         </div>
       </div>
 
-      <div class="popup" id="registrationContainerPopup">
+      <div class="popup popup--modal" id="registrationContainerPopup">
         <div class="popup-content">
           <h2 style="color: green" id="registrationContainerPopupH2">
             Your details have been successfully saved. Your Password :
@@ -1230,7 +2273,7 @@
         </div>
       </div>
 
-      <div class="popup" id="kartikContainer">
+      <div class="popup popup--modal" id="kartikContainer">
         <div class="popup-content scrollable-content">
           <h2>कार्तिक मास की जय!</h2>
           <div id="kartik-radio-buttons" class="radio-container-scroll">
@@ -1619,7 +2662,7 @@
         </div>
       </div>
 
-      <div class="popup" id="saturdayContainer">
+      <div class="popup popup--modal" id="saturdayContainer">
         <div class="popup-content scrollable-content">
           <h2>हरि नाम संकीर्तन!</h2>
           <div class="radio-container-scroll">
@@ -1659,7 +2702,7 @@
         </div>
       </div>
 
-      <div class="popup" id="sundayContainer">
+      <div class="popup popup--modal" id="sundayContainer">
         <div class="popup-content scrollable-content">
           <h2>हरि नाम संकीर्तन!</h2>
           <div class="radio-container-scroll">
@@ -1689,7 +2732,7 @@
                     value="नहीं"
                     class="custom-radio"
                   />
-                  <label for="night9-no" class="custom-label">नहीं</label>
+                  <label for="sun-no" class="custom-label">नहीं</label>
                 </div>
               </div>
             </div>
@@ -1871,13 +2914,14 @@
       <div id="OtherLinkContainerMain">
         <div class="popup" id="otherLinkContianer">
           <div class="popup-content scrollable-content">
+            <h2>MCQ</h2>
             <button class="red" onclick="clearOtherLinkData()">Back</button>
             <div id="result-container" class="mcq-result-list-view"></div>
 
             <div class="accordion" id="otherLinkAccordion"></div>
           </div>
         </div>
-        <div class="popup" id="otherLinkPasswordPopup">
+        <div class="popup popup--modal" id="otherLinkPasswordPopup">
           <div class="popup-content scrollable-content">
             <h2>Enter Your Password</h2>
             <input
@@ -1927,7 +2971,7 @@
         </div>
       </div>
 
-      <div class="popup" id="passwordPopupAvgWindow">
+      <div class="popup popup--modal" id="passwordPopupAvgWindow">
         <div class="popup-content scrollable-content">
           <div class="contact-info">
             <p>
@@ -1978,6 +3022,7 @@
 
       <div class="popup" id="glorificationContainer">
         <div class="popup-content scrollable-content">
+          <h2>Glorifications</h2>
           <h3>Select Name</h3>
 
           <select id="nameDropdown" onchange="showImage()">
@@ -2027,7 +3072,7 @@
         </div>
       </div>
 
-      <div class="popup" id="gfPasswordPopup">
+      <div class="popup popup--modal" id="gfPasswordPopup">
         <div class="popup-content scrollable-content">
           <h2>Enter Your Password</h2>
           <input

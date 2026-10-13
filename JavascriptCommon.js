@@ -1272,7 +1272,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
 //#region Index DB
 
-const DB_VERSION = 18;
+const DB_VERSION = 19;
 
 function DB_OPEN_INTERNAL(dbName = "AppDB", storeName = "store") {
   return new Promise((resolve, reject) => {
