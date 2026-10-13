@@ -1,10 +1,10 @@
 //api constant
 const SAVE_JAPA_DATA =
-  "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const SAVE_HEARING_DATA =
-  "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const SAVE_READING_DATA =
-  "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const CHECK_PASSWORD_API =
   "https://script.google.com/macros/s/AKfycbw6xp8f4KopdloxGYNGQYWWEU6E_eM_-Zd6CrILLjBdUjPRF0o3LQow624rtsBOEhK9-w/exec?password=";
 const NEW_REGISTRATION_API =
@@ -16,11 +16,11 @@ const GET_READING_REPORT_DATA_API =
 const GET_HEARING_REPORT_DATA_API =
   "https://script.google.com/macros/s/AKfycbyVYnlqM80Or-jMlhQLEWc8nLT-SG_ffUx0JUAknkP8odfC_MVvRPYKChQxxD3ryueJ/exec";
 const GET_SADHNA_REPORT_DATA_API =
-  "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const GET_JAPA_MONTHLY_AVG =
-  "https://script.google.com/macros/s/AKfycbyZizkyxYkhw4Jx0gC6ZpMugtO8jEZWs4neIbn7EdSUV2VqXeXBimdPPdmjW24-eFq9/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const APPLICATION_URL =
-  "https://script.google.com/macros/s/AKfycbwJlpVuVs0jS2FVmr4ZIfkJMRSX8DNQTyn1wCwPGG8ab8s17WcGDrCvAPHy3It6xU-h/exec";
+  "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 
 //others
 const DATE_FORMAT_CONSTANT = {

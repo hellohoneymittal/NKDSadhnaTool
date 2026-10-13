@@ -431,9 +431,9 @@ function recordLap() {
   const lapTimeSeconds = timeToSeconds(formattedLapTime);
   const avgTimeSeconds = timeToSeconds(monthlyAverage);
 
-  if (lapTimeSeconds < 300) {
+  if (lapTimeSeconds <= 360) {
     SHOW_ERROR_POPUP(
-      `Current japa time is ${formattedLapTime}. Japa time must be more than 5 minutes. Please chant attentively.`,
+      `⚠️ Current japa time is <b>${formattedLapTime}</b> Japa time must be more than or equal to <b>6 minutes</b>. Please chant attentively.`,
     );
     return;
   }
@@ -641,8 +641,8 @@ function handleLastRoundDuringSubmit() {
     return false; //No round chanted.
   }
 
-  // Check if lapElapsedTime is greater than 3 minutes (180 seconds)
-  if (lapElapsedTime <= 180000) {
+  // Check if lapElapsedTime is greater than 5 minutes (300 seconds)
+  if (lapElapsedTime <= 300000) {
     return true; // Exit the function early if lapElapsedTime is 3 minutes or less
   }
 

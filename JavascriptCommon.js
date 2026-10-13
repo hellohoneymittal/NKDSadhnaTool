@@ -397,7 +397,7 @@ function SHOW_SUCCESS_POPUP(message) {
 
 // Function to show the error popup
 function SHOW_ERROR_POPUP(message) {
-  document.getElementById("errorMessage").textContent = message;
+  document.getElementById("errorMessage").innerHTML = message;
   document.getElementById("errorPopup").style.display = "flex";
 }
 
@@ -909,6 +909,63 @@ function ADD_OPTION_IN_YEAR_MONTH_DROPDOWN(monthSelectId, yearSelectId) {
   populateDropdown(yearSelect, years, "Year", currentYear); // Selected value is currentYear
 }
 
+async function CALL_API_WITH_CACHE(
+  apiType,
+  inputData = {},
+  cacheHours = null,
+  forceRefresh = false,
+  isWriteOperation = false,
+) {
+  if (!forceRefresh) {
+    const cachedResponse = await DB_GET(
+      apiType,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+    );
+
+    if (cachedResponse) {
+      console.log(`Cache Hit : ${apiType}`);
+      return cachedResponse;
+    }
+  }
+
+  console.log(`Cache Miss : ${apiType}`);
+
+  let response;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    console.log(`API Attempt ${attempt}/3 : ${apiType}`);
+
+    response = await CALL_API(apiType, inputData);
+
+    if (response?.status) {
+      console.log(`API Success on Attempt ${attempt} : ${apiType}`);
+      break;
+    }
+
+    if (isWriteOperation) {
+      console.log(`Write API failed. No retry : ${apiType}`);
+      break;
+    }
+
+    if (attempt < 3) {
+      console.log(`API failed. Retrying... : ${apiType}`);
+    }
+  }
+
+  if (response?.status && response?.data && !isWriteOperation) {
+    await DB_SET(
+      apiType,
+      response,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+      cacheHours,
+    );
+  }
+
+  return response;
+}
+
 async function CALL_API(apiType, data) {
   const onlineRes = await IS_ONLINE();
   if (onlineRes) {
@@ -1272,7 +1329,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
 //#region Index DB
 
-const DB_VERSION = 19;
+const DB_VERSION = 21;
 
 function DB_OPEN_INTERNAL(dbName = "AppDB", storeName = "store") {
   return new Promise((resolve, reject) => {
