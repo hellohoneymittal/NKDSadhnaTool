@@ -243,7 +243,7 @@ function backToMainScreenHearing(id) {
   pauseHearingTimer();
 }
 
-function showHearingPasswordPopup() {
+async function showHearingPasswordPopup() {
   // If the timer is still running, pause it and include the current run's time
   if (isHearingTimerRunning) {
     pauseHearingTimer();
@@ -269,12 +269,15 @@ function showHearingPasswordPopup() {
     return;
   }
 
-  if (getHearingUserLoginInfo()) {
-    if (userLoginInfoHearingData?.devName)
+  if (await getHearingUserLoginInfo()) {
+    if (userLoginInfoHearingData?.devName) {
       SHOW_CONFIRMATION_POPUP(
         "Do you want to submit your hearing notes ?",
         saveHearingData,
       );
+    } else {
+      ShowPopup(hearingContainerPasswordPopup);
+    }
   } else {
     ShowPopup(hearingContainerPasswordPopup);
   }
@@ -285,6 +288,8 @@ function closeHearingPasswordPopup() {
   ShowPopup(hearingContainer);
   startHearingTimer();
 }
+
+function savePassAndSaveHearingData() {}
 
 async function saveHearingData() {
   if (userLoginInfoHearingData?.devName) {
@@ -338,6 +343,7 @@ async function saveHearingData() {
         SHOW_ERROR_POPUP(MESSAGE_CONSTANT.correctPassword);
         return false;
       } else {
+        updatePasswordRefInApp(passwordAPIresponse);
         // Store the end time at the point of submission
         endTimestampHearing = Date.now();
         endTimeHearingAMPM = formatTimeToAMPM(endTimestampHearing);

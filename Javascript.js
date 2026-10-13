@@ -1520,6 +1520,7 @@ async function updatePasswordRefInApp(passwordAPIresponse) {
   debugger;
   if (passwordAPIresponse?.status && passwordAPIresponse?.devName) {
     let loginUser = "";
+    setUserNameOnFrontScreen(passwordAPIresponse?.devName);
     if (passwordAPIresponse.devoteeType == DEVOTEE_TYPE_CONSTANT.ggStudent) {
       loginUser = passwordAPIresponse.devName.split("_")[1];
     } else {
