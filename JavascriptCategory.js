@@ -24,36 +24,26 @@ async function submitAvgPasswordClick() {
 }
 
 async function internalCallMonthlyAvgAPI() {
-  const onlineRes = await IS_ONLINE();
-  if (onlineRes) {
-    try {
-      IsLoading(true);
-      const inputData = {
-        rowIndex: userLoginInfoData?.rowIndex,
-      };
-      japaAVGApiRequest.inputData = inputData;
-      const jsonReq = JSON.stringify(japaAVGApiRequest);
+  const inputData = {
+    rowIndex: userLoginInfoData?.rowIndex,
+  };
+  japaAVGApiRequest.inputData = inputData;
+  const jsonReq = JSON.stringify(japaAVGApiRequest);
 
-      const response = await axios.post(GET_JAPA_MONTHLY_AVG, jsonReq);
-      const data = response?.data;
-      if (data?.result?.length > 9) {
-        console.log(data.result);
-        monthlyAverage = data.result[10]?.toString();
-        const sdBlock = document.getElementById("sdBlock");
-        sdBlock.style.display = "flex";
-        sdBlock.textContent = `Monthly Average: ${monthlyAverage} Sec`;
-      }
-      IsLoading(false); // Stop loading
-    } catch (error) {
-      IsLoading(false); // Stop loading on error
-      console.log(error);
-      SHOW_ERROR_POPUP(error.message);
-    } finally {
-      IsLoading(false); // Stop loading regardless of success or error
-    }
+  const response = await CALL_API_WITH_CACHE(
+    "GET_JAPA_MONTHLY_AVG",
+    inputData,
+    24,
+  );
+
+  if (response?.data?.length > 9) {
+    monthlyAverage = response.data[10]?.toString();
+    const sdBlock = document.getElementById("sdBlock");
+    sdBlock.style.display = "flex";
+    sdBlock.textContent = `Monthly Average: ${monthlyAverage} Sec`;
+    SHOW_SPECIFIC_DIV(japaContainer);
+    pauseTimer();
   }
-  SHOW_SPECIFIC_DIV(japaContainer);
-  pauseTimer();
 }
 
 function backToMainScreen(id) {
