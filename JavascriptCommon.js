@@ -397,8 +397,11 @@ function SHOW_SUCCESS_POPUP(message) {
 
 // Function to show the error popup
 function SHOW_ERROR_POPUP(message) {
-  document.getElementById("errorMessage").innerHTML = message;
-  document.getElementById("errorPopup").style.display = "flex";
+  const errorMessage = document.getElementById("errorMessage");
+  const errorPopup = document.getElementById("errorPopup");
+
+  errorMessage.innerHTML = message;
+  errorPopup.style.display = "flex";
 }
 
 function CLOSE_INFO_POPUP(popupId) {
