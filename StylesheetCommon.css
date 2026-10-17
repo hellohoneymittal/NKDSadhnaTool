@@ -3238,7 +3238,7 @@ button.bulbyellow {
   }
 
   .app-header__inner {
-    padding: 0 16px;
+    padding: 0 10px;
   }
 
   .brand {
@@ -3273,7 +3273,7 @@ button.bulbyellow {
   }
 
   .header-account__name {
-    max-width: 42vw;
+    max-width: 50vw;
     padding: 7px 10px;
     font-size: 13px;
   }
