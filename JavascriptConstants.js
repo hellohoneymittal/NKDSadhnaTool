@@ -21,7 +21,9 @@ const GET_JAPA_MONTHLY_AVG =
   "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
 const APPLICATION_URL =
   "https://script.google.com/macros/s/AKfycbwoJVwV4qxrsmlffVKARrz8yu7k4NTZ1IswbouZb2qSQ51NMfWRokwmCTuPYnqt3mcR/exec";
-
+const APP_NAME = "NKDSadhnaTool";
+const BASE_URL_CLOUD_FLARE =
+  "https://api-nkdapps.nityakrishnadas-pnc.workers.dev/";
 //others
 const DATE_FORMAT_CONSTANT = {
   grid: "DD-MMM-YY",

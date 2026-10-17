@@ -153,7 +153,7 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 990;
+  z-index: 1001;
   height: var(--header-h);
   padding-top: var(--safe-top);
   background: rgba(255, 255, 255, 0.92);
@@ -169,6 +169,7 @@ a {
   padding: 0 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
@@ -220,8 +221,69 @@ a {
   color: var(--ink-500);
 }
 
-/* Lives inside #mainContainer so it only shows on the home screen, but is
-   pinned into the header strip. */
+.header-account {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.header-account [hidden] {
+  display: none;
+}
+
+.header-account__name {
+  position: relative;
+  padding: 8px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.header-account__name > p {
+  max-width: min(280px, 40vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-account__name:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.header-account__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1003;
+  min-width: 160px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.header-account__logout {
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--danger-700);
+  font-size: 14px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
+.header-account__logout:hover {
+  color: var(--danger-700);
+  background: var(--danger-50);
+  filter: none;
+}
+
 .header-actions {
   position: fixed;
   top: var(--safe-top);
@@ -1271,15 +1333,23 @@ body.short-active #mainContainer {
 
 .home-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
+  grid-template-areas: "main events";
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
   align-items: start;
   gap: 32px;
   margin-top: 32px;
 }
 
+.home-main {
+  grid-area: main;
+  min-width: 0;
+}
+
 .home-side {
+  grid-area: events;
+  min-width: 0;
   position: sticky;
-  top: 0;
+  top: 16px;
 }
 
 /* Section headings on the home screen: centred title framed by saffron
@@ -3198,6 +3268,20 @@ button.bulbyellow {
     color: rgba(255, 255, 255, 0.78);
   }
 
+  .header-account {
+    margin-left: 8px;
+  }
+
+  .header-account__name {
+    max-width: 42vw;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .header-account__name > p {
+    max-width: 42vw;
+  }
+
   .header-actions {
     right: 16px;
     gap: 8px;
@@ -3231,7 +3315,10 @@ button.bulbyellow {
   }
 
   .home-grid {
-    grid-template-columns: 1fr;
+    grid-template-areas:
+      "events"
+      "main";
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
     margin-top: 28px;
   }

@@ -1499,3 +1499,139 @@ async function DB_CLEAR(dbName = "AppDB", storeName = "store") {
 }
 
 //#endregion Index DB
+
+//#region cloud flare method
+let currentCloudflareWriteRequestId = null;
+
+function GENERATE_IDEMPOTENCY_KEY() {
+  return crypto.randomUUID();
+}
+
+async function CALL_API_CF(apiType, data, timeout = 50000, showLoading = true) {
+  const onlineRes = await IS_ONLINE();
+
+  if (!onlineRes) {
+    return null;
+  }
+
+  const request = {
+    apiType,
+    inputData: data,
+    appName: APP_NAME,
+  };
+
+  const apiName = apiType.toLowerCase();
+  const url = `${BASE_URL_CLOUD_FLARE}${apiName}`;
+
+  try {
+    if (showLoading) {
+      IsLoading(true);
+    }
+
+    const response = await axios.post(url, request, {
+      timeout,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("API STATUS:", response.status);
+    console.log("API DATA:", response.data);
+
+    const result = response?.data;
+
+    if (result?.status) {
+      return result;
+    }
+
+    console.error("Unexpected API response:", result);
+
+    SHOW_ERROR_POPUP("Something went wrong, please contact any NKD Servants.");
+
+    return null;
+  } catch (error) {
+    console.error("API ERROR:", {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+
+    SHOW_ERROR_POPUP(
+      error.response?.status
+        ? `API Error: ${error.response.status}`
+        : error.message,
+    );
+
+    return null;
+  } finally {
+    if (showLoading) {
+      IsLoading(false);
+    }
+  }
+}
+
+async function CALL_API_CF_WITHOUT_LOADING(apiType, data, timeout = 50000) {
+  return CALL_API_CF(apiType, data, timeout, false);
+}
+
+async function CALL_API_CF_WITH_CACHE(
+  apiType,
+  inputData = {},
+  cacheHours = null,
+  forceRefresh = false,
+) {
+  if (!forceRefresh) {
+    const cachedResponse = await DB_GET(
+      apiType,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+    );
+
+    if (cachedResponse) {
+      console.log(`Cache Hit : ${apiType}`);
+      return cachedResponse;
+    }
+  }
+
+  console.log(`Cache Miss : ${apiType}`);
+
+  const response = await CALL_API_CF(apiType, inputData);
+
+  if (response) {
+    await DB_SET(
+      apiType,
+      response,
+      INDEX_DB.dbName,
+      INDEX_DB.storeName,
+      cacheHours,
+    );
+  }
+
+  return response;
+}
+
+async function CALL_API_WRITE_CLOUDFLARE(
+  apiType,
+  inputData = {},
+  timeout = 50000,
+) {
+  if (!currentCloudflareWriteRequestId) {
+    currentCloudflareWriteRequestId = GENERATE_IDEMPOTENCY_KEY();
+  }
+
+  const writeData = {
+    ...inputData,
+    idempotencyKey: currentCloudflareWriteRequestId,
+  };
+
+  const response = await CALL_API_CF(apiType, writeData, timeout);
+
+  // Clear the key only after confirmed success.
+  if (response?.status === true || response?.status === "success") {
+    currentCloudflareWriteRequestId = null;
+  }
+
+  return response;
+}
+//#endregion cloud flare method
