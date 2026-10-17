@@ -288,19 +288,7 @@ async function loadTimerState() {
     }
   }
 
-  if (savedUserInfo?.devName) {
-    let button = document.getElementById("initialLoginLogout");
-    button.textContent = "Logout";
-    document.title = savedUserInfo?.loginUser;
-    const loginUserDiv = document.getElementById("login-user-name-div");
-    const loginUserLabel = document.getElementById("login-user-name-lbl");
-
-    if (savedUserInfo?.loginUser) {
-      loginUserDiv.style.display = "block"; // Make the div visible
-      loginUserLabel.innerHTML = `<strong>${savedUserInfo.loginUser}</strong>`; // Set the username in bold
-    }
-  }
-  setUserNameOnFrontScreen(savedUserInfo?.devName);
+  setLoginUserNameDiv(savedUserInfo?.loginUser);
 }
 
 // Initialize timer state on page load
@@ -1520,7 +1508,6 @@ async function updatePasswordRefInApp(passwordAPIresponse) {
   debugger;
   if (passwordAPIresponse?.status && passwordAPIresponse?.devName) {
     let loginUser = "";
-    setUserNameOnFrontScreen(passwordAPIresponse?.devName);
     if (passwordAPIresponse.devoteeType == DEVOTEE_TYPE_CONSTANT.ggStudent) {
       loginUser = passwordAPIresponse.devName.split("_")[1];
     } else {
@@ -1541,9 +1528,6 @@ async function updatePasswordRefInApp(passwordAPIresponse) {
       INDEX_DB.dbName,
       INDEX_DB.storeName,
     );
-
-    let button = document.getElementById("initialLoginLogout");
-    button.textContent = "Logout";
   } else {
     SHOW_ERROR_POPUP("Wrong Password!");
   }
@@ -1648,19 +1632,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //document.getElementById("monthVideo").src ="https://www.youtube.com/embed/" +videoId +"?modestbranding=1&controls=0&rel=0";
 });
-
-function setUserNameOnFrontScreen(devName) {
-  const loginUserDiv = document.getElementById("login-user-name-div_fp");
-  const loginUserLabel = document.getElementById("login-user-name-lbl_fp");
-
-  if (devName) {
-    loginUserDiv.style.display = "block";
-    loginUserLabel.innerHTML = `<strong>${devName}</strong>`;
-  } else {
-    loginUserDiv.style.display = "none";
-    loginUserLabel.innerHTML = `<strong>${devName}</strong>`;
-  }
-}
 
 function showManualJapaWindow() {
   const mantraText = document.getElementById("mantraText");
