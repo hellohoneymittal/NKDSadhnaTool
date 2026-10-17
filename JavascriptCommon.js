@@ -1514,10 +1514,14 @@ async function CALL_API_CF(apiType, data, timeout = 50000, showLoading = true) {
     return null;
   }
 
-  const request = {
-    apiType,
-    inputData: data,
+  const updatedData = {
+    ...data,
     appName: APP_NAME,
+  };
+
+  const request = {
+    apiType: apiType,
+    inputData: updatedData,
   };
 
   const apiName = apiType.toLowerCase();
@@ -1611,11 +1615,7 @@ async function CALL_API_CF_WITH_CACHE(
   return response;
 }
 
-async function CALL_API_WRITE_CLOUDFLARE(
-  apiType,
-  inputData = {},
-  timeout = 50000,
-) {
+async function CALL_API_WRITE_CF(apiType, inputData = {}, timeout = 50000) {
   if (!currentCloudflareWriteRequestId) {
     currentCloudflareWriteRequestId = GENERATE_IDEMPOTENCY_KEY();
   }
