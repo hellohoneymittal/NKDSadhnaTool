@@ -161,7 +161,7 @@ let pauseCount = 0;
 let newMinHeight = 3;
 
 let japaApiRequest = {
-  apiType: "SAVE_JAPA_DATA",
+  apiType: "SAVE_JAPA_DATA_CF",
   isNKDDevotee: "",
   date: "",
   password: "",
@@ -564,7 +564,7 @@ function resetTimer() {
     `${manualJapaCount} / 108`;
   renderManualMala(manualJapaCount, false);
   japaApiRequest = {
-    apiType: "SAVE_JAPA_DATA",
+    apiType: "SAVE_JAPA_DATA_CF",
     isNKDDevotee: "",
     date: "",
     password: "",
@@ -1489,7 +1489,7 @@ async function saveJapaDataAPI(request) {
   if (onlineRes) {
     try {
       debugger;
-      const response = await CALL_API_WRITE("SAVE_JAPA_DATA", request);
+      const response = await CALL_API_WRITE_CF("SAVE_JAPA_DATA_CF", request);
       return response;
     } catch (error) {
       console.log(error);
