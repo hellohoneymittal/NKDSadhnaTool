@@ -147,7 +147,7 @@ const GRAPH_BORDER_COLOR_CONSTANT = {
 
 function isKartikDataVisible() {
   const startDate = moment("2026-10-26", "YYYY-MM-DD");
-  const endDate = moment("2025-11-24", "YYYY-MM-DD");
+  const endDate = moment("2026-11-24", "YYYY-MM-DD");
   const currentDate = moment();
 
   // Check if current date is within the range (inclusive)
