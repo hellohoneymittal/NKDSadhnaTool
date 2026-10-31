@@ -1716,6 +1716,14 @@ body.short-active #mainContainer {
   --tile-glow: rgba(71, 85, 105, 0.25);
 }
 
+.tile--teams {
+  --tile-accent: #4f5bd5;
+  --tile-accent-2: #7280f4;
+  --tile-tint: #e2e8ff;
+  --tile-soft: #f2f4ff;
+  --tile-glow: rgba(79, 91, 213, 0.3);
+}
+
 .calendar-container {
   overflow: hidden;
   background: var(--surface);
